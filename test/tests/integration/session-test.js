@@ -159,6 +159,7 @@ test("session fetch sets isWorking to true", function(){
   Ember.run(function(){
     session.close();
   });
+});
 
 test("fetch session calls adapter", function(){
   ok(!session.get('isAuthenticated'), 'not authenticated');
