@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ember.SimpleAuth - examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="http://builds.emberjs.com/release/ember.js"></script>
+    <script src="https://github.com/simplabs/ember-simple-auth/releases/download/0.2.1/ember-simple-auth-0.2.1.js"></script>
+    <script src="../bower_components/loader/loader.js"></script>
+    <script src='../vendor/ember-shim.js'></script>
+    <script src='../bower_components/ember-resolver/dist/ember-resolver.js'></script>
+    <script src='../dist/torii.amd.js'></script>
+  </head>
+  <body style="padding-top: 50px;">
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+          {{#link-to 'index' classNames='navbar-brand'}}
+            Home
+          {{/link-to}}
+        </div>
+        <div class="collapse navbar-collapse navbar-ex5-collapse">
+          <ul class="nav navbar-nav">
+            {{#link-to 'protected' tagName='li'}}
+              <a style="cursor: pointer">Protected Page</a>
+            {{/link-to}}
+          </ul>
+          {{! display logout button when the session is authenticated, login button otherwise }}
+          {{#if session.isAuthenticated}}
+            <a {{ action 'invalidateSession' }} class="btn btn-danger navbar-btn navbar-right">Logout</a>
+          {{else}}
+            {{#link-to 'login' class="btn btn-success navbar-btn navbar-right"}}Login{{/link-to}}
+          {{/if}}
+        </div>
+      </nav>
+      <div class="container">
+        {{outlet}}
+      </div>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">&larr; back to examples list</a>
+        </div>
+      </nav>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+      <div class="page-header">
+        <h1>Torii example</h1>
+      </div>
+      {{#unless session.isAuthenticated}}
+        <div class="alert alert-info">
+          You can {{#link-to 'login' class="alert-link"}}login{{/link-to}} with Torii.
+        </div>
+      {{/unless}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="login">
+      <div class="page-header">
+        <h1>Login</h1>
+        <div class="alert alert-info">
+          <ul>
+            <li><button {{action "authenticate" "linked-in-oauth2"}}>Linked In OAuth2</button></li>
+            <li><button {{action "authenticate" "google-oauth2"}}>Google OAuth2</button></li>
+            <li><button {{action "authenticate" "facebook-connect"}}>Facebook Connect</button></li>
+            <li><button {{action "authenticate" "facebook-oauth2"}}>Facebook Oauth2</button></li>
+            <li><button {{action "authenticate" "dummy-success"}}>Dummy Success</button></li>
+            <li><button {{action "authenticate" "dummy-failure"}}>Dummy Failure</button></li>
+          </ul>
+        </div>
+        {{#if errorMessage}}
+          <div class="alert alert-danger">
+            <p>
+              <strong>Login failed:</strong> <code>{{errorMessage}}</code>
+            </p>
+          </div>
+        {{/if}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="protected">
+      <div class="page-header">
+        <h1>Protected Page</h1>
+      </div>
+      <div class="alert alert-warning">
+        This is a protected page only visible to authenticated users!
+      </div>
+    </script>
+
+    <script type="text/javascript">
+      // require Torii
+      require('torii/ember');
+
+      // setup Ember.SimpleAuth in an initializer
+      Ember.Application.initializer({
+        name: 'authentication',
+        initialize: function(container, application) {
+          // register the Torii authenticator so the session can find them
+          container.register('authenticator:torii', App.ToriiAuthenticator);
+          Ember.SimpleAuth.setup(container, application);
+        }
+      });
+
+      App = Ember.Application.create();
+
+      App.Router.reopen({
+        rootURL: 'simple-auth.html'
+      });
+
+      App.Router.map(function() {
+        // login route
+        this.route('login');
+        // protected route that's inaccessible without authentication
+        this.route('protected');
+      });
+
+      var configuration = require('torii/configuration').default;
+
+      configuration.endpoints['linked-in-oauth2'] = {
+        apiKey: '772yus6d70pf11'
+      };
+      configuration.endpoints['google-oauth2'] = {
+        redirectUri: 'http://localhost:8000/example/',
+        apiKey:      '139338504777-vqu8ikemg935k1kivsku7fv3cfgq9452.apps.googleusercontent.com'
+      };
+      configuration.endpoints['facebook-connect'] = {
+        appId:      '744221908941738'
+      };
+      configuration.endpoints['facebook-oauth2'] = {
+        apiKey:      '744221908941738',
+        redirectUri: 'http://localhost.dev:8000/example/'
+      };
+
+      // the custom authenticator that initiates the authentication process with Torii
+      App.ToriiAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+        restore: function(properties) {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            if (!Ember.isEmpty(properties.token)) {
+              resolve(properties);
+            } else {
+              reject();
+            }
+          });
+        },
+
+        authenticate: function(options) {
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            options.torii.open(options.endpoint).then(function(authData) {
+              console.log(authData);
+              resolve({ token: authData.authorizationCode });
+            }, function(error) {
+              reject(error);
+            });
+          });
+        },
+
+        invalidate: function() {
+          return Ember.RSVP.resolve();
+        }
+      });
+
+      // use the provided mixin in the application route
+      App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin);
+
+      // define the login route that defines the authentication action
+      App.LoginRoute = Ember.Route.extend({
+        actions: {
+          // action to trigger authentication with Torii
+          authenticate: function(endpoint) {
+            var controller = this.controller;
+            this.get('session').authenticate('authenticator:torii', {
+              torii:    this.get('torii'),
+              endpoint: endpoint
+            }).then(null, function(error) {
+              controller.set('errorMessage', error);
+            });
+          },
+        }
+      });
+
+      // make this route protected
+      App.ProtectedRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
+    </script>
+  </body>
+</html>
