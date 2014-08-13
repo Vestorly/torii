@@ -16,9 +16,9 @@ test('exists', function(){
 });
 
 test('handles a url', function(){
+  window.name = "torii-auth"
   var url = "http://authServer?code=123451235fw";
   var handler = new RedirectHandler(url);
-
   Ember.run(function(){
     handler.run().then(function(){}, function(error){
       ok(false, "run handler rejected a basic url");
@@ -44,6 +44,7 @@ test('rejects a url', function(){
 });
 
 test('posts a message', function(){
+  window.name = "torii-auth"
   var code = "d29f2jf20j",
       url = "http://authServer?code="+code,
       handler = new RedirectHandler(url);
