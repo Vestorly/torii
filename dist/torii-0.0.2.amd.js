@@ -1,6 +1,6 @@
 /**
-  @class RSVP
-  @module RSVP
+  @class Torii
+  @module Torii
   */
 define("torii/adapters/application", 
   ["exports"],
@@ -894,7 +894,7 @@ define("torii/redirect-handler",
       run: function(){
         var url = this.url;
         return new Ember.RSVP.Promise(function(resolve, reject){
-          if (!window.opener) {
+          if (!window.opener || window.name === "") {
             reject('No window.opener');
           } else {
             var data = "__torii_message:"+url;
