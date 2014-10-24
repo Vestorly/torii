@@ -11,7 +11,7 @@ module.exports = {
       var tree = this.treeGenerator(distPath);
 
       // Use a build-time check to output a warning if Torii is not
-      // conigured.
+      // configured.
       var config = this.project.config(this.app.env);
       if (!config.torii) {
         console.warn("Torii is installed but not configured in config/environment.js!");
@@ -54,6 +54,7 @@ module.exports = {
         'torii/providers/linked-in-oauth2': ['default'],
         'torii/providers/oauth1': ['default'],
         'torii/providers/oauth2-code': ['default'],
+        'torii/providers/oauth2-bearer': ['default'],
         'torii/providers/twitter-oauth1': ['default']
       }
     });
