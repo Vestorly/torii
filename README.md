@@ -172,7 +172,7 @@ module.exports = function(environment) {
       providers: {
         'facebook-connect': {
         appId: 'xxxxx-some-app-id',
-        scope: 'email,birthday'
+        scope: 'email,user_birthday'
       }
     }
   };
@@ -189,7 +189,7 @@ window.ENV['torii'] = {
   providers: {
     'facebook-connect': {
       appId: 'xxxxx-some-app-id',
-      scope: 'email,birthday'
+      scope: 'email,user_birthday'
     }
   }
 };
