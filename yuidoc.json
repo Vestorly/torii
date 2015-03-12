@@ -1,7 +1,7 @@
 {
   "name": "Torii",
   "description": "Ember Auth Library",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "url": "http://201-created.github.io/torii",
   "options": {
     "outdir": "docs"
