@@ -209,7 +209,7 @@ Now run `jspm install`. In your main html file before you import the main module
   System.import('application'); // your app
 ```
 
-where `application-config.js` contains the torii configuration:
+where `application-config.js` contains the Torii configuration (see [Configuring a Torii provider](#configuring-a-torii-provider)):
 
 ```
 window.ENV = window.ENV || {};
@@ -223,12 +223,15 @@ window.ENV.torii = {
 };
 ```
 
-In the `application.js` initialize torii:
+In the `application.js` initialize Torii:
 
 ```JavaScript
 import initializers from 'torii/load-initializers';
 initializers();
 ```
+
+After that Torii should be available in your Ember app.
+
 
 ## Configuring a Torii provider
 
