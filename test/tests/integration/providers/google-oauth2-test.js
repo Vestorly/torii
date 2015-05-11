@@ -64,3 +64,17 @@ test("Opens a popup to Google with access_type parameter", function(){
     torii.open('google-oauth2');
   });
 });
+
+test("Opens a popup to Google with hd parameter", function(){
+  expect(1);
+  configuration.providers['google-oauth2'].hd = "google.com";
+  mockPopup.open = function(url){
+    ok(
+      url.indexOf("hd=google.com") > -1,
+      "hd parameter is present" );
+    return Ember.RSVP.resolve({ code: 'test' });
+  }
+  Ember.run(function(){
+    torii.open('google-oauth2');
+  });
+});
