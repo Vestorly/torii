@@ -396,7 +396,7 @@ authorizations. An example application adapter with an `open` hook:
 // Here we will presume the store has been injected onto torii-adapter
 // factories. You would do this with an initializer, e.g.:
 //
-// application.inject('torii-adapter', 'store', 'store:main');
+// application.inject('torii-adapter', 'store', 'store:application');
 //
 export default Ember.Object.extend({
 
