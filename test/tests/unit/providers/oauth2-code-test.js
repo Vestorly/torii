@@ -50,6 +50,22 @@ test("Provider requires an apiKey", function(){
   }, /Expected configuration value providers.mock-oauth2.apiKey to be defined!/);
 });
 
+test("Provider does not require a redirectUri", function(){
+  configuration.providers['mock-oauth2'] = { apiKey: 'dummyKey' }
+  provider.redirectUri = null;
+
+  var error;
+
+  try {
+    provider.buildUrl();
+    error = false;
+  } catch(e) {
+    error = e;
+  }
+
+  ok(error === false, 'should not throw an error, but "' + error + '" was thrown');
+});
+
 test("Provider generates a URL with required config", function(){
   configuration.providers['mock-oauth2'] = {
     apiKey: 'dummyKey'
