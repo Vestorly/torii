@@ -448,6 +448,10 @@ a lot of companies provide api's upon which you can build in your application.
 You will now have to deal with the verification of your token in the browser. It
 will go something like this:
 
+__NOTE__: You should __only__ do this when you are using a `RS256`, or 'ES256'
+signature. These rely on assymmetric keys for their signatures. If you use
+`HS256` you'll expose your secret and others could generate valid jwt's.
+
 I'm assuming you have an ember-cli application. You'll need the addon:
 `ember-cli-browserify`. And you'll need to install two npm packages:
 `jwt-decode` and `jsrsasign`.
@@ -487,7 +491,8 @@ export default Ember.Route.extend({
 });
 ```
 
-
+This way you know reasonably certain your jwt was signed with the private key of
+your authentication provider.
 
 ## Session Management in Torii
 
