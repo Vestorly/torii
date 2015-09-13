@@ -1,5 +1,5 @@
 import RedirectHandler from 'torii/redirect-handler';
-import { CURRENT_REQUEST_KEY } from 'torii/services/popup';
+import { CURRENT_REQUEST_KEY } from 'torii/mixins/ui-service-mixin';
 
 function buildMockWindow(windowName, url){
   return {
