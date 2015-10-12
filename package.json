@@ -1,14 +1,15 @@
 {
   "name": "torii",
-  "version": "0.6.1",
+  "version": "0.7.0-beta.3",
   "description": "A set of clean abstractions for authentication in Ember.js",
   "directories": {
     "lib": "lib"
   },
+  "main": "index.js",
   "files": [
-    "dist/",
-    "lib/",
-    "ember-addon/",
+    "index.js",
+    "addon/",
+    "app/",
     "test-support/",
     "bower.json"
   ],
@@ -53,8 +54,7 @@
     "load-grunt-tasks": "~1.0.0"
   },
   "scripts": {
-    "test": "ember try:testall",
-    "prepublish": "grunt build"
+    "test": "ember try:testall"
   },
   "repository": {
     "type": "git",

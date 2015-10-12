@@ -2,7 +2,6 @@ import requiredProperty from 'torii/lib/required-property';
 import { getConfiguration } from 'torii/configuration';
 
 var computed = Ember.computed;
-var get      = Ember.get;
 
 /**
  * The base class for all torii providers
