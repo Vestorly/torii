@@ -15,12 +15,16 @@ var failPopup = new MockPopup({
   response: { 'id_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo' }
 });
 
+var registry, container;
+
 module('OpenID Connect - Integration', {
   setup: function(){
-    container = toriiContainer();
-    container.register('torii-service:mock-popup', mockPopup, {instantiate: false});
-    container.register('torii-service:fail-popup', failPopup, {instantiate: false});
-    container.injection('torii-provider', 'popup', 'torii-service:mock-popup');
+    var results = toriiContainer();
+    registry = results[0];
+    container = results[1];
+    registry.register('torii-service:mock-popup', mockPopup, {instantiate: false});
+    registry.register('torii-service:fail-popup', failPopup, {instantiate: false});
+    registry.injection('torii-provider', 'popup', 'torii-service:mock-popup');
 
     torii = container.lookup("service:torii");
     configuration.providers['openid-connect'] = {
@@ -45,7 +49,7 @@ test("Opens a popup to the specified url", function(){
 });
 
 test('Validates the state parameter in the response', function(){
-  container.injection('torii-provider', 'popup', 'torii-service:fail-popup');
+  registry.injection('torii-provider', 'popup', 'torii-service:fail-popup');
 
   Ember.run(function(){
     torii.open('openid-connect').then(null, function(e){

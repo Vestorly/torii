@@ -10,6 +10,7 @@ var MockPopup = function(options) {
 
 MockPopup.prototype.open = function(url, keys){
   this.opened = true;
+  this.url = url;
 
   var parser = ParseQueryString.create({url: url, keys: ['state']}),
     data = parser.parse(),
