@@ -5,10 +5,12 @@ var MockPopup = function(options) {
 
   this.opened = false;
   this.state = options.state;
+  this.response = options.response || { code: 'test' }
 };
 
 MockPopup.prototype.open = function(url, keys){
   this.opened = true;
+  this.url = url;
 
   var parser = ParseQueryString.create({url: url, keys: ['state']}),
     data = parser.parse(),
@@ -18,7 +20,7 @@ MockPopup.prototype.open = function(url, keys){
     state = this.state;
   }
 
-  var response = { code: 'test' };
+  var response = this.response;
 
   if (keys.indexOf('state') !== -1) {
     response.state = state;

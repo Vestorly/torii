@@ -2,8 +2,8 @@
 
 # Compatibility Matrix
 
-|  Torii    | Ember   | Ember-Data         |
-|-----------|---------|--------------------|
+|  Torii               | Ember   | Ember-Data         |
+|----------------------|---------|--------------------|
 | v0.3.X and before    | <= 1.13 | <= 1.0.0.beta19.2  |
 | v0.4.X and after     | >= 1.12 | >= 1.0.0.beta19.2  |
 
@@ -416,6 +416,7 @@ Torii comes with several providers already included:
   * Facebook OAuth2 ([Dev Site](https://developers.facebook.com/) | [Docs](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/))
   * Stripe Connect (OAuth2) ([Dev Site](https://stripe.com/docs) | [Docs](https://stripe.com/docs/connect))
   * Edmodo Connect (OAuth2) ([Dev Site](https://developers.edmodo.com/) | [Docs](https://developers.edmodo.com/edmodo-connect/docs/))
+  * OpenID Connect (OAut2) ([Dev Site](http://openid.net/connect/) | [Spec](http://openid.net/specs/openid-connect-core-1_0.html))
   * **Authoring custom providers is designed to be easy** - You are encouraged to author your own.
 
 ### Supporting OAuth 1.0a
@@ -432,6 +433,66 @@ following these steps:
      transmits a message back to the parent window.
   6. Ember application in the initial window closes the popup and resolves its
      provider promise.
+
+### Using jwt tokens from openid-connect provider
+
+JWT token can come with a lot of information, it will when you specify you in
+`scope` you want it to include the `profile`, but should be trusted by default.
+There are a few things you could do. If you have an API yourself you could add
+a route to which you can POST the token and it will verify it and return the
+profile.
+
+However the beauty is that you don't necessarily need an api anymore these days
+a lot of companies provide api's upon which you can build in your application.
+
+You will now have to deal with the verification of your token in the browser. It
+will go something like this:
+
+__NOTE__: You should __only__ do this when you are using a `RS256`, or 'ES256'
+signature. These rely on assymmetric keys for their signatures. If you use
+`HS256` you'll expose your secret and others could generate valid jwt's.
+
+I'm assuming you have an ember-cli application. You'll need the addon:
+`ember-cli-browserify`. And you'll need to install two npm packages:
+`jwt-decode` and `jsrsasign`.
+
+You can then use the openid-connect provider like any other to get your jwt:
+
+```JavaScript
+import jsrsasign from 'npm:jsrsasign';
+import jwtDecode from 'npm:jwt-decode'
+
+const PEM =
+  `-----BEGIN CERTIFICATE-----
+base64 encoded certificate
+-----END CERTIFICATE-----`
+
+// app/routes/login.js
+export default Ember.Route.extend({
+  actions: {
+    signInWithOpenID: function(){
+      var route = this,
+          controller = this.controllerFor('login');
+      // The provider name is passed to `open`
+      this.get('session').open('openid-connect').then(function(data){
+        // data.authorizationCode contains the jwt
+        const verified = jsrsasign.JWS.jws.verify(data.authorizationCode, PEM, [RS256]);
+        if (verified) {
+          this.get('session').set('token', jwtDecode(data.authorizationCode));
+          route.transitionTo('dashboard');  
+        } else {
+          controller.set('error', 'Invalid jwt signature');
+        }
+      }, function(error){
+        controller.set('error', 'Could not sign you in: '+error.message);
+      });
+    }
+  }
+});
+```
+
+This way you know reasonably certain your jwt was signed with the private key of
+your authentication provider.
 
 ## Session Management in Torii
 
