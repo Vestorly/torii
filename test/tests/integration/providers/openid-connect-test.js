@@ -1,4 +1,4 @@
-var torii, container;
+var torii, container, registry;
 
 import toriiContainer from 'test/helpers/torii-container';
 import configuration from 'torii/configuration';
@@ -14,8 +14,6 @@ var failPopup = new MockPopup({
   state: 'invalid-state',
   response: { 'id_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo' }
 });
-
-var registry, container;
 
 module('OpenID Connect - Integration', {
   setup: function(){
