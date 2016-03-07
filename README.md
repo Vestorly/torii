@@ -271,6 +271,66 @@ You will want to add `require('torii/load-initializers')['default']();` to your 
 and before you've created it.
 Here is an [example app.js](https://gist.github.com/bantic/b86787ed315c5ef98323).
 
+### Using Torii via JSPM
+
+Add torii to your `package.json` as following:
+
+```
+{
+  ...
+  "jspm": {
+    ...
+    "dependencies": {
+      ...
+      "torii": "github:Vestorly/torii@0.3.4"
+    },
+    "overrides": {
+      ...
+      "github:Vestorly/torii@0.3.4": {
+        "main": "torii.js",
+        "directories": {
+          "lib": "lib/torii"
+        },
+        "dependencies": {},
+        "shim": {}
+      }
+    }
+  }
+}
+```
+
+Now run `jspm install`. In your main html file before you import the main module, import the application config. For example:
+
+```JavaScript
+  System.baseURL = '/';
+  System.import('application-config'); // app config window.ENV
+  System.import('application'); // your app
+```
+
+where `application-config.js` contains the Torii configuration (see [Configuring a Torii provider](#configuring-a-torii-provider)):
+
+```
+window.ENV = window.ENV || {};
+window.ENV.torii = {
+  providers: {
+    'facebook-connect': {
+      appId: 'xxxxx-some-app-id',
+      scope: 'email,user_birthday'
+    }
+  }
+};
+```
+
+In the `application.js` initialize Torii:
+
+```JavaScript
+import initializers from 'torii/load-initializers';
+initializers();
+```
+
+After that Torii should be available in your Ember app.
+
+
 ## Configuring a Torii provider
 
 Now that you have added Torii to your application, you will want to
