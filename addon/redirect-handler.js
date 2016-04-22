@@ -27,6 +27,7 @@ var RedirectHandler = Ember.Object.extend({
           // NOTE : If a single provider has been configured to use the 'iframe'
           // service, this next line will still be called. It will just fail silently.
           windowObject.close();
+          reject('force refresh');
         }
       } else{
         reject('Not a torii popup');
