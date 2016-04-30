@@ -1,6 +1,6 @@
 {
   "name": "torii",
-  "version": "0.7.0-beta.4",
+  "version": "0.8.0",
   "description": "A set of clean abstractions for authentication in Ember.js",
   "authors": [
     {
