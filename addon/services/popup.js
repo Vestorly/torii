@@ -43,6 +43,14 @@ var Popup = Ember.Object.extend(Ember.Evented, UiServiceMixin, {
   openRemote: function(url, pendingRequestKey, options){
     var optionsString = stringifyOptions(prepareOptions(options || {}));
     this.remote = window.open(url, pendingRequestKey, optionsString);
+
+    // Mock WindowObjectReference
+    // This leaves the state machine in loading state rather
+    // than throwing an exception.
+    this.remote = this.remote || {
+      closed: false,
+      focus() {}
+    };
   },
 
   closeRemote: function(){
