@@ -15,7 +15,10 @@
   ],
   "ember-addon": {
     "demoUrl": "http://vestorly.github.io/torii/demo.html",
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "versionCompatibility": {
+       "ember": ">=1.12.1"
+    }
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.1.2",
@@ -35,7 +38,7 @@
     "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
-    "ember-try": "0.0.8",
+    "ember-try": "~0.2.8",
     "grunt": "~0.4.2",
     "grunt-banner": "^0.2.3",
     "grunt-cli": "~0.1.11",
@@ -54,7 +57,7 @@
     "load-grunt-tasks": "~1.0.0"
   },
   "scripts": {
-    "test": "ember try:testall"
+    "test": "ember try:each"
   },
   "repository": {
     "type": "git",
