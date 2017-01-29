@@ -39,6 +39,7 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
    * closed the popup window, the promise rejects.
    */
   open: function(options){
+
     var name        = this.get('name'),
         url         = this.buildUrl(),
         redirectUri = this.get('redirectUri'),
@@ -119,6 +120,8 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
             }
           }
         );
+      }).then( function (authenticationData) {
+        return authenticationData;
       });
     });
   }
