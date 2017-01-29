@@ -69,44 +69,57 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
       }
       */
 
-      // Validation of the token, for details, see
+      // Token validation. For details, see
       // https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken
-
-      // Token validation request
-      Ember.$.ajax(
-        {
-          type: 'GET',
-          url: tokenValidationUrl,
-          data: {
-            'access_token': authData['access_token']
-          },
-          success: function (jsonResponse) {
-            /* the response is a JSON that looks like:
-            {
-              "audience":"8819981768.apps.googleusercontent.com",
-              "user_id":"123456789",
-              "scope":"profile email",
-              "expires_in":436
+      return new Ember.RSVP.Promise( function (resolve, reject) {
+        // Token validation request
+        Ember.$.ajax(
+          {
+            type: 'GET',
+            url: tokenValidationUrl,
+            data: {
+              'access_token': authData['access_token']
+            },
+            success: function (jsonResponse) {
+              /* the response is a JSON that looks like:
+              {
+                "audience":"8819981768.apps.googleusercontent.com",
+                "user_id":"123456789",
+                "scope":"profile email",
+                "expires_in":436
+              }
+              */
+              // the token is valid if the 'audience' is the same as the
+              // 'client_id' (apiKey) provided to initiate authentication
+              if (jsonResponse.audience === clientId) {
+                // authentication succeeded
+                resolve({
+                  authorizationToken: authData,
+                  provider: name,
+                  redirectUri: redirectUri
+                });
+              } else if (jsonResponse.audience === undefined) {
+                // authentication failed because the response from the server
+                // is not as expected (no 'audience' field)
+                reject(new Error("Unexpected response from token validation " +
+                  "server. The 'audience' field may be missing."));
+              } else {
+                // authentication failed because the token is invalid or has
+                // been tempered with
+                reject(new Error("Access token is invalid or has been " +
+                  "tempered with. You may be subject to a 'confused deputy' " +
+                  "attack."));
+              }
+            },
+            error: function (jqXHR, textStatus) {
+              // authentication failed because the validation request failed
+              reject(new Error("Token validation request failed with status '" +
+                textStatus + "' (server '" + tokenValidationUrl + "' '" +
+                jqXHR.responseText + "')."));
             }
-            */
-            // the token is valid if the 'audience' is the same as the client ID
-            if (jsonResponse.audience === clientId) {
-              // authentication succeeded
-              return {
-                authorizationToken: authData,
-                provider: name,
-                redirectUri: redirectUri
-              };
-            } else {
-              throw new Error('Invalid access token.');
-            }
-          },
-          error: function (response) {
-            throw new Error('Connot reach the token validation server: ' +
-                             tokenValidationUrl);
           }
-        }
-      );
+        );
+      });
     });
   }
 });
