@@ -1,12 +1,14 @@
-/**
- * This class implements authentication against google's authentication server
- * using v2, using the client-side OAuth2 authorization flow in a popup window.
- */
-
 import OAuth2Code from 'torii/providers/oauth2-code';
 import {configurable} from 'torii/configuration';
 import Ember from 'ember';
 
+/**
+ * This class implements a provider allowing authentication against google's
+ * authentication server using v2 of google's OAuth2 authentication flow. The
+ * user is invited to authenticate in a popup window. Once a token is obtained,
+ * it is validated by a second HTTP request (to another url). Authentication is
+ * complte once this validation step has succeeded, and the token is returned.
+ */
 var GoogleOauth2BearerV2 = OAuth2Code.extend({
 
   name:    'google-oauth2-bearer-v2',
@@ -15,9 +17,11 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
 
   tokenValidationUrl: 'https://www.googleapis.com/oauth2/v2/tokeninfo',
 
-  // additional params that this provider requires
+  // additional parameters that this provider requires
   optionalUrlParams: ['scope', 'request_visible_actions'],
 
+  // a scope MUST be given (no default value because there are so many possible
+  // at Google)
   scope: configurable('scope'),
 
   requestVisibleActions: configurable('requestVisibleActions', ''),
