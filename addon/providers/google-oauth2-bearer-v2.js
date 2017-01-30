@@ -97,12 +97,14 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
               // the token is valid if the 'audience' is the same as the
               // 'client_id' (apiKey) provided to initiate authentication
               if (jsonResponse.audience === clientId) {
-                // authentication succeeded
-                resolve({
-                  authorizationToken: authData,
-                  provider: name,
-                  redirectUri: redirectUri
-                });
+                // authentication succeeded. Add name and redirectUri to the
+                // authentication data and resolve
+                resolve(Object.assign(authData,
+                  {
+                    provider: name,
+                    redirectUri: redirectUri
+                  }
+                ));
               } else if (jsonResponse.audience === undefined) {
                 // authentication failed because the response from the server
                 // is not as expected (no 'audience' field)
@@ -128,6 +130,13 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
         return authenticationData;
       });
     });
+  },
+
+  fetch: function (authenticationData) {
+    // this is the most basic for ember-simple-auth to work with this provider,
+    // but the session could actually be checked and renewed here if the token
+    // is too old.
+    return authenticationData;
   }
 });
 
