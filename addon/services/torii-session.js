@@ -29,7 +29,7 @@ export default Ember.Service.extend(Ember._ProxyMixin, {
   }),
 
   // Make these properties one-way.
-  setUnknownProperty: Ember.K,
+  setUnknownProperty() {},
 
   open: function(provider, options){
     var owner     = getOwner(this),
