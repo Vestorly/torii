@@ -8,9 +8,9 @@ module.exports = {
       }
     },
     {
-      name: 'Ember 1.13.16',
+      name: 'Ember 1.13.13',
       dependencies: {
-        'ember': '1.13.16'
+        'ember': '1.13.13'
       }
     },
     {
@@ -42,6 +42,7 @@ module.exports = {
       resolutions: {
         'ember': 'beta'
       },
+    },
     {
       name: 'Ember Release',
       dependencies: {
@@ -50,7 +51,6 @@ module.exports = {
       resolutions: {
         'ember': 'release'
       }
-    }
     }
   ]
 };
