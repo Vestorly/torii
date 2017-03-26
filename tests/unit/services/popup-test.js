@@ -12,8 +12,12 @@ var buildMockWindow = function(windowName){
   windowName = windowName || "";
   return {
     name: windowName,
-    focus: Ember.K,
-    close: Ember.K
+    focus: function() {
+      return this;
+    },
+    close: function() {
+      return this;
+    }
   };
 };
 
