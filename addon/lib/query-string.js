@@ -1,5 +1,6 @@
 var camelize = Ember.String.camelize,
-    get      = Ember.get;
+    get      = Ember.get,
+    typeOf   = Ember.typeOf;
 
 function isValue(value){
   return (value || value === false);
@@ -32,11 +33,15 @@ function getOptionalParamValue(obj, paramName){
   return getParamValue(obj, paramName, true);
 }
 
+function arrayCopy(arr){
+  return typeOf(arr) === 'array' ? arr.slice() : [];
+}
+
 export default Ember.Object.extend({
   init: function() {
     this.obj               = this.provider;
-    this.urlParams         = Ember.A(this.requiredParams).uniq();
-    this.optionalUrlParams = Ember.A(this.optionalParams || []).uniq();
+    this.urlParams         = Ember.A(arrayCopy(this.requiredParams)).uniq();
+    this.optionalUrlParams = Ember.A(arrayCopy(this.optionalParams)).uniq();
 
     this.optionalUrlParams.forEach(function(param){
       if (this.urlParams.indexOf(param) > -1) {
