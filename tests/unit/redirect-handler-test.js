@@ -17,7 +17,9 @@ function buildMockWindow(windowName, url){
       getItem: function() {},
       removeItem: function() {}
     },
-    close: Ember.K
+    close: function() {
+      return this;
+    }
   };
 }
 
