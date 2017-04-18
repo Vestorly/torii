@@ -26,7 +26,7 @@ authorization is destroyed.
 A provider in Torii is anything a user can authenticate against. This could be an
 OAuth 2.0 endpoint, your own login mechanism, or an SDK like Facebook Connect.
 Authenticating against a **provider** is done via the `torii` property, which is injected
-on to routes:
+into routes:
 
 ```hbs
 {{! app/templates/post.hbs }}
@@ -236,40 +236,19 @@ The session will automatically be populated if the user is logged in, otherwise 
 
 Using Torii currently requires an AMD-compatible module loader. [Ember-CLI](http://www.ember-cli.com/) provide this out of the box.
 
-### Using Torii as an ember-addon
+### Installing Torii
 
-Torii is configured to be compatible with the ember-cli
-[ember-addon](http://reefpoints.dockyard.com/2014/06/24/introducing_ember_cli_addons.html)
-functionality, as of ember-cli version 0.0.37.
+Torii is an ember addon and can be installed via:
 
-If you are using ember-cli at version 0.0.37 or later, you can simply install the torii npm module:
-
-`npm install torii --save-dev`
-
-The ember-addon hooks will include torii into your app and add its
-initializers.
+```
+ember install torii
+```
 
 ### Using Torii via bower
 
-Torii is also published as a bower package (as named amd modules).
-Install via bower:
-
-`bower install torii`
-
-Next, **add Torii to your build pipeline**. In Ember-App-Kit you do this
-in `app/index.html`. In Ember-CLI, you add the package to the `Brocfile.js`:
-
-```
-// Your path to torii may be different than the one below, depending on
-// your bower configuration.
-app.import('vendor/torii/dist/torii.amd.js');
-```
-
-**Add Torii's intialization code to your app**. Torii exports an amd module named `torii/load-initializers`, which will
-add the appropriate application initializers to do Torii's container registrations and injections.
-You will want to add `require('torii/load-initializers')['default']();` to your `app.js` file after you've defined your app
-and before you've created it.
-Here is an [example app.js](https://gist.github.com/bantic/b86787ed315c5ef98323).
+As of v0.8.0, Torii is no longer published to bower. For legacy uses, there is
+an AMD build of Torii published to bower at version 0.6.1. For modern usage of
+Torii, install it as an ember addon.
 
 ## Configuring a Torii provider
 
@@ -297,21 +276,6 @@ module.exports = function(environment) {
     }
   };
   return ENV;
-};
-```
-
-For a non-ember-cli application, you can set the same values on `ENV`:
-
-```JavaScript
-// In Ember-App-Kit you will set this in app/index.html
-window.ENV = window.ENV || {};
-window.ENV['torii'] = {
-  providers: {
-    'facebook-connect': {
-      appId: 'xxxxx-some-app-id',
-      scope: 'email,user_birthday'
-    }
-  }
 };
 ```
 
@@ -676,10 +640,9 @@ There are a number of ember-cli addons that allow you to use Torii with other pr
   * Clone the repo `git clone git@github.com:Vestorly/torii.git`, `cd torii/`
   * `npm install`
   * `bower install`
-  * `grunt test` for tests.
+  * `npm test` for tests.
   * Or, to run tests in the browser:
-    * Start the server: `grunt server`
-    * Open [http://localhost:8000/test/](http://localhost:8000/test/)
+    * Start the server: `ember test --server`
 
 ## Running the torii examples locally
 
@@ -705,29 +668,15 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 
 Now, start your server and visit the page:
 
-  * `grunt server`
+  * `ember serve`
   * open `http://torii-example.com:8000/example/basic.html`
-
-## Generate docs
-
-Use [YUIDoc](http://yui.github.io/yuidoc/).
-
-  * Install: `npm install -g yuidocjs`
-  * Generate: `yuidoc lib/`
-  * Output will be put into "docs/"
 
 ## Release a new version
 
-  * Bump version in package.json
-  * Bump version in bower.json
-  * `grunt build-release`
-  * Force commit new/changed files in dist/
-  * Commit changed bower.json, package.json
+  * Bump version in package.json; commit
   * `git tag <version>`
   * `git push --tags`
-  * Publishing a version git tag will automatically register a new bower
-    version
-  * To publish the updated npm module, `npm publish ./`
+  * `npm publish ./`
 
 ## How to help
 

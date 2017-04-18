@@ -1,6 +1,6 @@
 {
   "name": "torii",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "A set of clean abstractions for authentication in Ember.js",
   "directories": {
     "lib": "lib"
@@ -38,23 +38,8 @@
     "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
-    "ember-try": "~0.2.8",
-    "grunt": "~0.4.2",
-    "grunt-banner": "^0.2.3",
-    "grunt-cli": "~0.1.11",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-concat": "~0.5.0",
-    "grunt-contrib-connect": "~0.7.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-testem-mincer": "~0.5.18",
-    "grunt-contrib-uglify": "~0.6.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-yuidoc": "~0.5.0",
-    "grunt-es3-safe-recast": "^0.1.0",
-    "grunt-es6-module-transpiler": "~0.6.0",
-    "jshint": "~2.5.6",
-    "load-grunt-config": "~0.14.0",
-    "load-grunt-tasks": "~1.0.0"
+    "ember-try": "^0.2.12",
+    "jshint": "~2.5.6"
   },
   "scripts": {
     "test": "ember try:each"

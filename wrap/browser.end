@@ -1,2 +1,0 @@
-require('torii/load-initializers').default();
-})();

@@ -1,55 +1,7 @@
 {
   "name": "torii",
-  "version": "0.8.0",
-  "description": "A set of clean abstractions for authentication in Ember.js",
-  "authors": [
-    {
-      "name": "Matt Beale",
-      "email": "matt.beale@madhatted.com"
-    },
-    {
-      "name": "Cory Forsyth",
-      "email": "cory.forsyth@gmail.com"
-    },
-    {
-      "name": "Vestorly",
-      "email": "hello@vestorly.com"
-    }
-  ],
-  "homepage": "http://vestorly.github.io/torii/",
-  "keywords": [
-    "authentication",
-    "ember",
-    "emberjs",
-    "authorization",
-    "oauth"
-  ],
-  "license": "https://github.com/Vestorly/torii/blob/master/LICENSE",
-  "main": [
-    "dist/torii.amd.js"
-  ],
-  "ignore": [
-    "bower_components",
-    "dist/commonjs",
-    "ember-addon",
-    "app-addon",
-    "vendor-addon",
-    "example",
-    "lib",
-    "tasks",
-    "test",
-    "vendor",
-    "Gruntfile.js",
-    "package.json",
-    "testem.json",
-    "yuidoc.json"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Vestorly/torii.git"
-  },
   "dependencies": {
-    "ember": "1.13.13",
+    "ember": "1.12.1",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
     "ember-cli-test-loader": "ember-cli-test-loader#0.1.3",
     "ember-load-initializers": "ember-cli/ember-load-initializers#0.1.5",
@@ -59,8 +11,5 @@
     "jquery": "~2.1.4",
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.19.0"
-  },
-  "resolutions": {
-    "ember": "1.13.13"
   }
 }

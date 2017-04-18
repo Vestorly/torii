@@ -3,6 +3,7 @@ import QueryString from 'torii/lib/query-string';
 import QUnit from 'qunit';
 
 let { module, test } = QUnit;
+let { freeze } = Object;
 
 var obj,
     clientId = 'abcdef',
@@ -31,6 +32,12 @@ test('looks up properties by camelized name', function(assert){
 
   assert.equal(qs.toString(), 'client_id='+clientId,
         'sets client_id from clientId property');
+});
+
+test('does not fail when requiredParams or optionalParams are frozen', function(assert){
+  assert.expect(0);
+
+  QueryString.create({provider: obj, requiredParams: freeze(['client_id']), optionalParams: freeze(['optional_property'])});
 });
 
 test('joins properties with "&"', function(assert){
