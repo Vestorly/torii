@@ -33,7 +33,7 @@ export default Ember.Service.extend(Ember._ProxyMixin, {
 
   open: function(provider, options){
     var owner     = getOwner(this),
-        torii     = this.get('torii'),
+        torii     = getOwner(this).lookup('service:torii'),
         sm        = this.get('stateMachine');
 
     return new Ember.RSVP.Promise(function(resolve){
