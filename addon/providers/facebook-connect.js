@@ -18,6 +18,7 @@ function fbLoad(settings){
   var locale = settings.locale;
   delete settings.locale;
   fbPromise = new Ember.RSVP.Promise(function(resolve, reject){
+    if (window.FB) { return resolve(); }
     window.fbAsyncInit = function(){
       FB.init(settings);
       Ember.run(null, resolve);
