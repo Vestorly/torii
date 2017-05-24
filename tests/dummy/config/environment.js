@@ -21,6 +21,15 @@ module.exports = function(environment) {
       providers: {
         'github-oauth2': {
           apiKey: '954836589bc32e767422'
+        },
+        'google-oauth2-bearer-v2' : {
+          // put your Google client ID here
+          apiKey: '<your Google client ID here>',
+          // use the same URI here as one configured in your Google developer console
+          redirectUri: 'http://localhost:4200',
+          // for a list of all possible scopes, see
+          // https://developers.google.com/identity/protocols/googlescopes
+          scope: 'https://www.googleapis.com/auth/gmail.readonly'
         }
       }
     }

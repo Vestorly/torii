@@ -1,6 +1,7 @@
 import LinkedInOauth2Provider from 'torii/providers/linked-in-oauth2';
 import GoogleOauth2Provider from 'torii/providers/google-oauth2';
 import GoogleOauth2BearerProvider from 'torii/providers/google-oauth2-bearer';
+import GoogleOauth2BearerV2Provider from 'torii/providers/google-oauth2-bearer-v2';
 import FacebookConnectProvider from 'torii/providers/facebook-connect';
 import FacebookOauth2Provider from 'torii/providers/facebook-oauth2';
 import ApplicationAdapter from 'torii/adapters/application';
@@ -23,6 +24,7 @@ export default function(application) {
   application.register('torii-provider:linked-in-oauth2', LinkedInOauth2Provider);
   application.register('torii-provider:google-oauth2', GoogleOauth2Provider);
   application.register('torii-provider:google-oauth2-bearer', GoogleOauth2BearerProvider);
+  application.register('torii-provider:google-oauth2-bearer-v2', GoogleOauth2BearerV2Provider);
   application.register('torii-provider:facebook-connect', FacebookConnectProvider);
   application.register('torii-provider:facebook-oauth2', FacebookOauth2Provider);
   application.register('torii-provider:twitter', TwitterProvider);

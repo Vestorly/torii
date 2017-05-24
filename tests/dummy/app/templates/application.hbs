@@ -1,3 +1,50 @@
-<h1>torii on ember-cli</h1>
+<h1>Torii on EmberCLI!</h1>
+
+<h2>First configure your provider</h2>
+
+<p>To test a provider, first configure it in your app's <code>'config/environment.js'</code> file:
+<ul>
+  <li>use your own client ID or API key</li>
+  <li>choose a scope</li>
+  <li>set other provider-dependent parameters...</li>
+</ul>
+</p>
+
+
+<h2>Example: OAuth2 with Google</h2>
+
+<p>For instance, for the Google OAuth2 provider <code>'google-oauth2-bearer-v2'</code>, adapt the following code sample:
+<pre>
+// config/environment.js
+
+module.exports = function(environment) {
+  var ENV = {
+    ...
+    torii: {
+      providers: {
+        'google-oauth2-bearer-v2' : {
+          apiKey: '&lt;copy your Google client ID here&gt;',
+          redirectUri: '&lt;a URI that is configured in your Google developer console&gt;', // e.g. 'http://localhost:4200'
+          scope: '&lt;one of the many possible scopes, depending on what you want to do&gt;'
+        }
+      }
+    }
+  };
+</pre>
+For a list of all possible scopes, see <a target="_blank" href="https://developers.google.com/identity/protocols/googlescopes">https://developers.google.com/identity/protocols/googlescopes</a>.
+</p>
+
+
+<h1>Test "Sign in" buttons</h1>
 
 <button {{action 'signIn' 'github-oauth2'}}>Sign in to github</button>
+
+<button {{action 'signIn' 'google-oauth2-bearer-v2'}}>Sign in to Google</button>
+
+
+<h2>Result of the authentication flow</h2>
+
+<pre>
+authData =
+{{authDataStr}}
+</pre>
