@@ -9,6 +9,7 @@ import GithubOauth2Provider from 'torii/providers/github-oauth2';
 import AzureAdOauth2Provider from 'torii/providers/azure-ad-oauth2';
 import StripeConnectProvider from 'torii/providers/stripe-connect';
 import EdmodoConnectProvider from 'torii/providers/edmodo-connect';
+import MicrosoftLiveOauth2Provider from 'torii/providers/microsoft-live-oauth2';
 import configuration from 'torii/configuration';
 
 import ToriiService from 'torii/services/torii';
@@ -30,6 +31,7 @@ export default function(application) {
   application.register('torii-provider:azure-ad-oauth2', AzureAdOauth2Provider);
   application.register('torii-provider:stripe-connect', StripeConnectProvider);
   application.register('torii-provider:edmodo-connect', EdmodoConnectProvider);
+  application.register('torii-provider:microsoft-live-oauth2', MicrosoftLiveOauth2Provider);
   application.register('torii-adapter:application', ApplicationAdapter);
 
   application.register('torii-service:iframe', IframeService);
