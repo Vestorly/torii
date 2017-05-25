@@ -406,6 +406,10 @@ By default Torii sets the `redirectUri` to
 `<currentURL>/torii/redirect.html`. If you wish to use the deprecated behavior
 then you will also have to manually configure the `redirectUri` to be `/`.
 
+If you are no longer relying on the deprecated behaviour and wish for it to no
+longer be executed you can manually disable it by setting
+`disableRedirectInitializer` to false in your `config.environment.js`.
+
 ## Providers in Torii
 
 Torii is built with several providers for common cases. If you intend to

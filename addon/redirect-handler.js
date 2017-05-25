@@ -9,6 +9,13 @@
 import { CURRENT_REQUEST_KEY, WARNING_KEY } from "./mixins/ui-service-mixin";
 import configuration from 'torii/configuration';
 
+export class ToriiRedirectError extends Ember.Error {
+  constructor() {
+    super(...arguments);
+    this.name = 'ToriiRedirectError';
+  }
+}
+
 var RedirectHandler = Ember.Object.extend({
 
   run: function(){
@@ -28,8 +35,8 @@ var RedirectHandler = Ember.Object.extend({
           // service, this next line will still be called. It will just fail silently.
           windowObject.close();
         }
-      } else{
-        reject('Not a torii popup');
+      } else {
+        reject(new ToriiRedirectError('Not a torii popup'));
       }
     });
   }
