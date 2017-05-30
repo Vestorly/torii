@@ -1,9 +1,13 @@
 machine:
   node:
-    version: "v4"
+    version: 6.10.3
+  pre:
+    - mkdir ~/.cache/yarn
 dependencies:
   pre:
     - npm install -g bower
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+  cache_directories:
+    - ~/.cache/yarn
   override:
-    - npm i
-    - bower i
+    - yarn install

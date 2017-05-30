@@ -10,7 +10,7 @@ const { module, test } = QUnit;
 var opened, mockPopup;
 
 module('Edmodo Connect - Integration', {
-  setup: function(){
+  beforeEach() {
     app = startApp({loadInitializers: true});
     mockPopup = {
       open: function(){
@@ -32,7 +32,7 @@ module('Edmodo Connect - Integration', {
       }
     });
   },
-  teardown: function(){
+  afterEach() {
     opened = false;
     Ember.run(app, 'destroy');
   }

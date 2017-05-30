@@ -12,7 +12,7 @@ var GoogleOauth2Bearer = Oauth2Bearer.extend({
   baseUrl: 'https://accounts.google.com/o/oauth2/auth',
 
   // additional params that this provider requires
-  optionalUrlParams: ['scope', 'request_visible_actions'],
+  optionalUrlParams: ['scope', 'request_visible_actions', 'hd'],
 
   requestVisibleActions: configurable('requestVisibleActions', ''),
 
@@ -21,7 +21,8 @@ var GoogleOauth2Bearer = Oauth2Bearer.extend({
   scope: configurable('scope', 'email'),
 
   redirectUri: configurable('redirectUri',
-                            'http://localhost:4200/oauth2callback')
+                            'http://localhost:4200/oauth2callback'),
+  hd: configurable('hd', '')
 });
 
 export default GoogleOauth2Bearer;

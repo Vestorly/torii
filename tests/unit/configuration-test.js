@@ -15,10 +15,10 @@ var Testable = Ember.Object.extend({
     testable;
 
 module('Configuration - Unit', {
-  setup: function(){
+  beforeEach() {
     testable = Testable.create();
   },
-  teardown: function(){
+  afterEach() {
     Ember.run(testable, 'destroy');
   }
 });

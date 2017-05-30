@@ -21,7 +21,7 @@ function proxyToProvider(methodName, requireMethod){
         return Ember.RSVP.Promise.resolve({});
       }
     }
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new Ember.RSVP.Promise(function(resolve){
       resolve( provider[methodName](options) );
     });
   };

@@ -17,7 +17,7 @@ var Provider = BaseProvider.extend({
 });
 
 module('MockOauth1Provider (oauth1 subclass) - Unit', {
-  setup: function(){
+  beforeEach() {
     originalConfiguration = getConfiguration();
     configure({
       providers: {
@@ -26,7 +26,7 @@ module('MockOauth1Provider (oauth1 subclass) - Unit', {
     });
     provider = Provider.create();
   },
-  teardown: function(){
+  afterEach() {
     Ember.run(provider, 'destroy');
     configure(originalConfiguration);
   }

@@ -5,8 +5,6 @@
 
 import Provider from 'torii/providers/base';
 import {configurable} from 'torii/configuration';
-import QueryString from 'torii/lib/query-string';
-import requiredProperty from 'torii/lib/required-property';
 
 var Oauth1 = Provider.extend({
   name: 'oauth1',

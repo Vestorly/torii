@@ -1,10 +1,10 @@
-/* jshint node: true */
+/* eslint-env node */
 
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -19,8 +19,35 @@ module.exports = function(environment) {
     },
     torii: {
       providers: {
+        'linked-in-oauth2': {
+          apiKey: '772yus6d70pf11'
+        },
         'github-oauth2': {
-          apiKey: '954836589bc32e767422'
+          apiKey: '36564132549469e48c02',
+        },
+        'google-oauth2': {
+          apiKey: '139338504777-321kme2daihrj8kr8g739ntne4h2bghk.apps.googleusercontent.com',
+          redirectUri: 'http://torii-example.com:4200/torii/redirect.html'
+        },
+        'google-oauth2-bearer': {
+          apiKey: '139338504777-321kme2daihrj8kr8g739ntne4h2bghk.apps.googleusercontent.com',
+          scope: 'email',
+          redirectUri: 'http://torii-example.com:4200/torii/redirect.html'
+        },
+        'facebook-connect': {
+          appId:      '744221908941738'
+        },
+        'facebook-oauth2': {
+          apiKey:      '744221908941738',
+        },
+        'google-oauth2-bearer-v2' : {
+          // put your Google client ID here
+          apiKey: '139338504777-321kme2daihrj8kr8g739ntne4h2bghk.apps.googleusercontent.com',
+          // use the same URI here as one configured in your Google developer console
+          redirectUri: 'http://torii-example.com:4200/torii/redirect.html',
+          // for a list of all possible scopes, see
+          // https://developers.google.com/identity/protocols/googlescopes
+          scope: 'https://www.googleapis.com/auth/userinfo.email'
         }
       }
     }
@@ -36,7 +63,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter

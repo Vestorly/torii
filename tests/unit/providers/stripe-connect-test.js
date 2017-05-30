@@ -8,7 +8,7 @@ let originalConfiguration;
 
 
 module('Unit - StripeConnectProvider', {
-  setup: function(){
+  beforeEach() {
     originalConfiguration = getConfiguration();
     configure({
       providers: {
@@ -17,7 +17,7 @@ module('Unit - StripeConnectProvider', {
     });
     provider = StripeConnectProvider.create();
   },
-  teardown: function(){
+  afterEach() {
     Ember.run(provider, 'destroy');
     configure(originalConfiguration);
   }

@@ -6,9 +6,15 @@
  * and should postMessage this data to window.opener
  */
 
-import PopupIdSerializer from "./lib/popup-id-serializer";
-import { CURRENT_REQUEST_KEY } from "./mixins/ui-service-mixin";
+import { CURRENT_REQUEST_KEY, WARNING_KEY } from "./mixins/ui-service-mixin";
 import configuration from 'torii/configuration';
+
+export class ToriiRedirectError extends Ember.Error {
+  constructor() {
+    super(...arguments);
+    this.name = 'ToriiRedirectError';
+  }
+}
 
 var RedirectHandler = Ember.Object.extend({
 
@@ -20,6 +26,7 @@ var RedirectHandler = Ember.Object.extend({
       windowObject.localStorage.removeItem(CURRENT_REQUEST_KEY);
       if (pendingRequestKey) {
         var url = windowObject.location.toString();
+        windowObject.localStorage.setItem(WARNING_KEY, 'true');
         windowObject.localStorage.setItem(pendingRequestKey, url);
 
         var remoteServiceName = configuration.remoteServiceName || 'popup';
@@ -28,8 +35,8 @@ var RedirectHandler = Ember.Object.extend({
           // service, this next line will still be called. It will just fail silently.
           windowObject.close();
         }
-      } else{
-        reject('Not a torii popup');
+      } else {
+        reject(new ToriiRedirectError('Not a torii popup'));
       }
     });
   }

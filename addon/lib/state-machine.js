@@ -102,7 +102,6 @@ StateMachine.prototype = {
   _transition: function(event, filter, fn) {
     var from = filter.from || SPLAT,
       to = filter.to || SPLAT,
-      context = this,
       matchingTo, matchingFrom,
       toSplatOffset, fromSplatOffset,
       negatedMatchingTo, negatedMatchingFrom;
@@ -214,8 +213,7 @@ StateMachine.prototype = {
 
     var eventApi = {
       transition: function() {
-        var length = arguments.length,
-        first = arguments[0],
+        var first = arguments[0],
         second = arguments[1],
         events = normalizeEvents(eventName, first, second);
 
@@ -230,8 +228,7 @@ StateMachine.prototype = {
   },
 
   unhandledEvent: function(event){
-    var currentStateName = this.currentStateName,
-    message = "Unknown Event: `" + event + "` for: " + this.toString();
+    var message = "Unknown Event: `" + event + "` for: " + this.toString();
 
     throw new Error(message);
   }

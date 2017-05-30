@@ -9,13 +9,13 @@ import QUnit from 'qunit';
 let { module, test } = QUnit;
 
 module('Torii - Integration', {
-  setup: function(){
+  beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-provider:dummy-success', DummySuccessProvider);
     app.register('torii-provider:dummy-failure', DummyFailureProvider);
     torii = lookup(app, 'service:torii');
   },
-  teardown: function(){
+  afterEach() {
     Ember.run(app, 'destroy');
   }
 });

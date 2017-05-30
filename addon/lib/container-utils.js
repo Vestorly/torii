@@ -17,6 +17,9 @@ export function register(applicationInstance, name, factory) {
 export function lookupFactory(applicationInstance, name) {
   if (applicationInstance && applicationInstance.lookupFactory) {
     return applicationInstance.lookupFactory(name);
+  } else if (applicationInstance && applicationInstance.resolveRegistration) {
+    // See https://github.com/Vestorly/torii/issues/362
+    return applicationInstance.resolveRegistration(name);
   } else if (applicationInstance && applicationInstance.application) {
     return applicationInstance.application.__container__.lookupFactory(name);
   } else {

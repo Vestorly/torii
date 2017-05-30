@@ -8,7 +8,7 @@ let provider;
 let originalConfiguration;
 
 module('Unit - AzureAdOAuth2Provider', {
-  setup: function(){
+  beforeEach() {
     originalConfiguration = getConfiguration();
     configure({
       providers: {
@@ -17,7 +17,7 @@ module('Unit - AzureAdOAuth2Provider', {
     });
     provider = AzureAdProvider.create();
   },
-  teardown: function(){
+  afterEach() {
     Ember.run(provider, 'destroy');
     configure(originalConfiguration);
   }

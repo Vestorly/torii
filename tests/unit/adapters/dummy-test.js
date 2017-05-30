@@ -5,10 +5,10 @@ let { module, test } = QUnit;
 var adapter;
 
 module("DummyAdapter - Unit", {
-  setup: function(){
+  beforeEach() {
     adapter = DummyAdapter.create();
   },
-  teardown: function() {
+  afterEach() {
     Ember.run(adapter, 'destroy');
   }
 });

@@ -1,7 +1,4 @@
 import UiServiceMixin from 'torii/mixins/ui-service-mixin';
-import UUIDGenerator from 'torii/lib/uuid-generator';
-
-var on = Ember.on;
 
 function stringifyOptions(options){
   var optionsStrings = [];

@@ -20,7 +20,7 @@ var requestTokenUri = 'http://localhost:3000/oauth/callback';
 var providerName = 'oauth1';
 
 module('Oauth1 - Integration', {
-  setup: function(){
+  beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-service:mock-popup', mockPopup, {instantiate: false});
     app.inject('torii-provider', 'popup', 'torii-service:mock-popup');
@@ -36,7 +36,7 @@ module('Oauth1 - Integration', {
       }
     });
   },
-  teardown: function(){
+  afterEach() {
     opened = false;
     Ember.run(app, 'destroy');
   }

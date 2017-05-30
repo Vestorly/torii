@@ -1,19 +1,21 @@
-var torii, app;
-
 import buildFBMock from '../../helpers/build-fb-mock';
 import { configure } from 'torii/configuration';
 import startApp from '../../helpers/start-app';
 import lookup from '../../helpers/lookup';
 import QUnit from 'qunit';
+import Ember from 'ember';
 
 const { module, test } = QUnit;
+const { $ } = Ember;
 
 var originalGetScript = $.getScript,
     originalFB = window.FB;
 let providerConfiguration;
 
+var torii, app;
+
 module('Facebook Connect - Integration', {
-  setup: function(){
+  beforeEach() {
     app = startApp({loadInitializers: true});
     torii = lookup(app, 'service:torii');
     providerConfiguration = {
@@ -26,7 +28,7 @@ module('Facebook Connect - Integration', {
     });
     window.FB = buildFBMock();
   },
-  teardown: function(){
+  afterEach() {
     window.FB = originalFB;
     $.getScript = originalGetScript;
     Ember.run(app, 'destroy');

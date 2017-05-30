@@ -11,14 +11,14 @@ let configuration = rawConfig.torii;
 var app, originalSessionServiceName;
 
 module('Routing - Acceptance', {
-  setup: function(){
+  beforeEach() {
     originalSessionServiceName = configuration.sessionServiceName;
     delete configuration.sessionServiceName;
   },
 
-  teardown: function(){
-    Ember.run(app, 'destroy');
+  afterEach() {
     configuration.sessionServiceName = originalSessionServiceName;
+    Ember.run(app, 'destroy');
   }
 });
 
@@ -130,7 +130,7 @@ test('authenticated routes get authenticate method', function(assert){
   assert.ok(!unauthenticatedRoute.authenticate, "authenticate function is not present");
 });
 
-test('lazyily created authenticated routes get authenticate method', function(assert){
+test('lazily created authenticated routes get authenticate method', function(assert){
   assert.expect(2);
   configuration.sessionServiceName = 'session';
 

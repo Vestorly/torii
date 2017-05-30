@@ -10,4 +10,4 @@
 *.un~
 *.swp
 .ackrc
-npm-debug.log
+npm-debug.log*
