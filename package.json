@@ -16,7 +16,10 @@
   ],
   "ember-addon": {
     "demoUrl": "http://vestorly.github.io/torii/demo.html",
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "versionCompatibility": {
+       "ember": ">=1.12.1"
+    }
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
