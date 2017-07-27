@@ -175,3 +175,35 @@ test('can override state property', function(assert){
   assert.equal(state, 'insecure-fixed-state',
         'specified state property is set');
 });
+
+test('URI-decodes the authorization code', function(assert){
+  assert.expect(1);
+
+  configure({
+    providers: {
+      'mock-oauth2-token': {
+        apiKey: 'dummyKey',
+        scope: 'someScope',
+        state: 'test-state'
+      }
+    }
+  });
+
+  var mockPopup = {
+    open: function(/*url, responseParams*/){
+      return Ember.RSVP.resolve({
+        'token_id': encodeURIComponent('test=='),
+        'authorization_code': 'pief',
+        'state': 'test-state'
+      });
+    }
+  };
+
+  tokenProvider.set('popup', mockPopup);
+
+  Ember.run(function(){
+    tokenProvider.open().then(function(res){
+      assert.equal(res.authorizationCode, 'test==', 'authorizationCode decoded');
+    });
+  });
+});

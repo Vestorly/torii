@@ -168,7 +168,7 @@ var Oauth2 = Provider.extend({
       }
 
       return {
-        authorizationCode: authData[responseType],
+        authorizationCode: decodeURIComponent(authData[responseType]),
         provider: name,
         redirectUri: redirectUri
       };
