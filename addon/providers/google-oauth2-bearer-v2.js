@@ -18,7 +18,7 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
   tokenValidationUrl: 'https://www.googleapis.com/oauth2/v2/tokeninfo',
 
   // additional parameters that this provider requires
-  optionalUrlParams: ['scope', 'request_visible_actions'],
+  optionalUrlParams: ['scope', 'request_visible_actions', 'hd'],
 
   // a scope MUST be given (no default value because there are so many possible
   // at Google)
@@ -31,6 +31,8 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
   responseParams: ['access_token', 'token_type', 'expires_in'],
 
   redirectUri: configurable('redirectUri'),
+
+  hd: configurable('hd', ''),
 
   /**
    * @method open

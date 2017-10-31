@@ -52,7 +52,9 @@ module.exports = function(environment) {
           redirectUri: 'http://torii-example.com:4200/torii/redirect.html',
           // for a list of all possible scopes, see
           // https://developers.google.com/identity/protocols/googlescopes
-          scope: 'https://www.googleapis.com/auth/userinfo.email'
+          scope: 'https://www.googleapis.com/auth/userinfo.email',
+          // the G Suite domain to which users must belong to sign in
+          hd: 'example.com'
         }
       }
     }
