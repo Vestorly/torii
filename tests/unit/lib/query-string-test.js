@@ -8,11 +8,13 @@ let { freeze } = Object;
 const get = Ember.get;
 
 let obj,
-  objGetter,
   clientId = 'abcdef',
   responseType = 'code',
   redirectUri = 'http://localhost.dev:3000/xyz/pdq',
-  optionalProperty = 'i-am-optional';
+  optionalProperty = 'i-am-optional',
+  objGetter = (keyName) => {
+    return get(obj, keyName);
+  };
 
 module('QueryString - Unit', {
   beforeEach() {
@@ -24,10 +26,6 @@ module('QueryString - Unit', {
       optionalProperty: optionalProperty,
       falseProp: false
     });
-
-    objGetter = (keyName) => {
-      return get(obj, keyName);
-    };
   },
   afterEach() {
     Ember.run(obj, 'destroy');
