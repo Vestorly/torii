@@ -1,4 +1,4 @@
-import ParseQueryString from 'torii/lib/parse-query-string';
+import { parseQueryString } from 'torii/lib/query-string';
 
 var MockPopup = function(options) {
   options = options || {};
@@ -10,8 +10,7 @@ var MockPopup = function(options) {
 MockPopup.prototype.open = function(url, keys){
   this.opened = true;
 
-  var parser = ParseQueryString.create({url: url, keys: ['state']}),
-    data = parser.parse(),
+  var data = parseQueryString(url, ['state']),
     state = data.state;
 
   if (this.state !== undefined) {

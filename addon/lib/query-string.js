@@ -1,6 +1,6 @@
 const camelize = Ember.String.camelize;
 
-export function buildQueryString(objGetter, requiredParams, optionalParams) {
+function buildQueryString(objGetter, requiredParams, optionalParams) {
   const urlParams = Ember.A(requiredParams.slice()).uniq();
 
   const optionalUrlParams = Ember
@@ -67,3 +67,23 @@ function getParamValue(objGetter, paramName, optional = false) {
 function getOptionalParamValue(objGetter, paramName){
   return getParamValue(objGetter, paramName, true);
 }
+
+function parseQueryString(url, keys) {
+  const data = {};
+
+  keys.forEach((key) => {
+    const regex = new RegExp(`${key}=([^&#]*)`);
+    const match = regex.exec(url);
+
+    if (match) {
+      data[key] = match[1];
+    }
+  });
+
+  return data;
+}
+
+export {
+  buildQueryString,
+  parseQueryString
+};

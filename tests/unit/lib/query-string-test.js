@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
-import { buildQueryString } from 'torii/lib/query-string';
+import { buildQueryString, parseQueryString } from 'torii/lib/query-string';
 
 let { module, test } = QUnit;
 let { freeze } = Object;
@@ -151,4 +151,36 @@ test('#buildQueryString - assert.throws if optionalParams includes any requiredP
     },
     /required parameters cannot also be optional/i
   );
+});
+
+test('#parseQueryString - parses each passed key', function(assert){
+  const result = parseQueryString(
+    'http://localhost.dev:3000/xyz/?code=abcdef',
+    ['code']
+  );
+
+  assert.ok(result.code, 'gets code');
+  assert.equal(result.code, 'abcdef', 'gets correct code');
+});
+
+test('#parseQueryString - parses keys without the hash fragment', function(assert){
+  const result = parseQueryString(
+    'http://localhost.dev:3000/xyz/?code=abcdef#notCode=other',
+    ['code']
+  );
+
+  assert.ok(result.code, 'gets code');
+  assert.equal(result.code, 'abcdef', 'gets correct code');
+});
+
+test('#parseQueryString - parses multiple keys', function(assert){
+  const result = parseQueryString(
+    'http://localhost.dev:3000/xyz/?oauth_token=xxx&oauth_verifier=yyy',
+    ['oauth_token', 'oauth_verifier']
+  );
+
+  assert.ok(result.oauth_token, 'gets token');
+  assert.ok(result.oauth_verifier, 'gets verifier');
+  assert.equal(result.oauth_token, 'xxx', 'gets correct token');
+  assert.equal(result.oauth_verifier, 'yyy', 'gets correct verifier');
 });
