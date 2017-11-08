@@ -1,26 +1,62 @@
-var camelize = Ember.String.camelize,
-    get      = Ember.get;
+const camelize = Ember.String.camelize;
+
+export function buildQueryString(objGetter, requiredParams, optionalParams) {
+  const urlParams = Ember.A(requiredParams.slice()).uniq();
+
+  const optionalUrlParams = Ember
+    .A(optionalParams ? optionalParams.slice() : [])
+    .uniq();
+
+  optionalUrlParams.forEach((param) => {
+    if (urlParams.indexOf(param) > -1) {
+      throw new Error(
+        `Required parameters cannot also be optional: "${param}"`
+      );
+    }
+  });
+
+  const keyValuePairs = Ember.A([]);
+
+  urlParams.forEach(function(paramName) {
+    const paramValue = getParamValue(objGetter, paramName);
+
+    keyValuePairs.push([paramName, paramValue]);
+  });
+
+  optionalUrlParams.forEach(function(paramName) {
+    const paramValue = getOptionalParamValue(objGetter, paramName);
+
+    if (isValue(paramValue)) {
+      keyValuePairs.push([paramName, paramValue]);
+    }
+  });
+
+  return keyValuePairs.map(function(pair) {
+    return pair.join('=');
+  }).join('&');
+}
 
 function isValue(value){
   return (value || value === false);
 }
 
-function getParamValue(obj, paramName, optional){
-  var camelizedName = camelize(paramName),
-      value         = get(obj, camelizedName);
+function getParamValue(objGetter, paramName, optional = false) {
+  const camelizedName = camelize(paramName),
+        value         = objGetter(camelizedName);
 
   if (!optional) {
-    if ( !isValue(value) && isValue(get(obj, paramName))) {
+    if ( !isValue(value) && isValue(objGetter(paramName))) {
       throw new Error(
-        'Use camelized versions of url params. (Did not find ' +
-        '"' + camelizedName + '" property but did find ' +
-        '"' + paramName + '".');
+        `Use camelized versions of url params. (Did not find \
+        "${camelizedName}" property but did find \
+        "${paramName}".`
+      );
     }
 
     if (!isValue(value)) {
       throw new Error(
-        'Missing url param: "'+paramName+'". (Looked for: property named "' +
-        camelizedName + '".'
+        `Missing url param: "${paramName}". (Looked for: property named \
+        "${camelizedName}".`
       );
     }
   }
@@ -28,45 +64,6 @@ function getParamValue(obj, paramName, optional){
   return isValue(value) ? encodeURIComponent(value) : undefined;
 }
 
-function getOptionalParamValue(obj, paramName){
-  return getParamValue(obj, paramName, true);
+function getOptionalParamValue(objGetter, paramName){
+  return getParamValue(objGetter, paramName, true);
 }
-
-export default Ember.Object.extend({
-  init: function() {
-    this.obj               = this.provider;
-    this.urlParams         = Ember.A(this.requiredParams.slice()).uniq();
-    this.optionalUrlParams = Ember.A(this.optionalParams ? this.optionalParams.slice() : []).uniq();
-
-    this.optionalUrlParams.forEach(function(param){
-      if (this.urlParams.indexOf(param) > -1) {
-        throw new Error("Required parameters cannot also be optional: '" + param + "'");
-      }
-    }, this);
-  },
-
-  toString: function() {
-    var urlParams         = this.urlParams,
-        optionalUrlParams = this.optionalUrlParams,
-        obj               = this.obj,
-        keyValuePairs     = Ember.A([]);
-
-    urlParams.forEach(function(paramName){
-      var paramValue = getParamValue(obj, paramName);
-
-      keyValuePairs.push( [paramName, paramValue] );
-    });
-
-    optionalUrlParams.forEach(function(paramName){
-      var paramValue = getOptionalParamValue(obj, paramName);
-
-      if (isValue(paramValue)) {
-        keyValuePairs.push( [paramName, paramValue] );
-      }
-    });
-
-    return keyValuePairs.map(function(pair){
-      return pair.join('=');
-    }).join('&');
-  }
-});
