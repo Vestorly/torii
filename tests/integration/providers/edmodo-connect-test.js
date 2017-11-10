@@ -9,7 +9,7 @@ const { module, test } = QUnit;
 
 var opened, mockPopup;
 
-module('Edmodo Connect - Integration', {
+module('Integration | Provider | Edmodo Connect', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     mockPopup = {

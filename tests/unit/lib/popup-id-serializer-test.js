@@ -3,7 +3,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('PopupIdSerializer - Unit');
+module('Unit | Lib | PopupIdSerializer');
 
 test('.serialize prepends a prefix before the popup id', function(assert){
   var popupId = "abc12345";

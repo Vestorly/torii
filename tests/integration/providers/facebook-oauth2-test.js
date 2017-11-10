@@ -12,7 +12,7 @@ var mockPopup = new MockPopup();
 
 var failPopup = new MockPopup({ state: 'invalid-state' });
 
-module('Facebook OAuth2 - Integration', {
+module('Integration | Provider | Facebook OAuth2', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-service:mock-popup', mockPopup, {instantiate: false});

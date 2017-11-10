@@ -5,7 +5,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('DummyFailureProvider - Unit', {
+module('Unit | Provider | DummyFailureProvider', {
   beforeEach() {
     provider = Provider.create();
   },

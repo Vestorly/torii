@@ -3,7 +3,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('State Machine - Unit');
+module('Unit | Lib | State Machine');
 
 test("can transition from one state to another", function(assert){
   var sm = new StateMachine({

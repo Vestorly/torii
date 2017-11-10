@@ -19,7 +19,7 @@ var opened, openedUrl, mockPopup = {
 var requestTokenUri = 'http://localhost:3000/oauth/callback';
 var providerName = 'oauth1';
 
-module('Oauth1 - Integration', {
+module('Integration | Provider | Oauth1', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-service:mock-popup', mockPopup, {instantiate: false});

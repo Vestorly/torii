@@ -34,7 +34,7 @@ var buildMockStorageEvent = function(popupId, redirectUrl){
   });
 };
 
-module("Popup - Unit", {
+module('Unit | Service | Popup', {
   beforeEach() {
     popup = Popup.create();
     localStorage.removeItem(CURRENT_REQUEST_KEY);

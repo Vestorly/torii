@@ -3,7 +3,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('UUIDGenerator - Unit');
+module('Unit | Lib | UUIDGenerator');
 
 test('exists', function(assert){
   assert.ok(UUIDGenerator);

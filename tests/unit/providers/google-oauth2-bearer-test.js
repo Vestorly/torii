@@ -8,7 +8,7 @@ import QUnit from 'qunit';
 let { module, test } = QUnit;
 let originalConfiguration;
 
-module('Unit - GoogleAuth2BearerProvider', {
+module('Unit | Provider | GoogleAuth2BearerProvider', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

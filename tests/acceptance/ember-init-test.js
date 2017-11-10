@@ -14,7 +14,7 @@ function lookupFactory(app, key) {
 let toriiConfiguration = configuration.torii;
 var originalSessionServiceName;
 
-module('Ember Initialization - Acceptance', {
+module('Acceptance | Ember Initialization', {
   beforeEach() {
     originalSessionServiceName = toriiConfiguration.sessionServiceName;
     delete toriiConfiguration.sessionServiceName;

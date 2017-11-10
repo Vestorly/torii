@@ -3,7 +3,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('Torii');
+module('Unit | Torii');
 
 test('exists', function(assert){
   assert.ok(Torii);

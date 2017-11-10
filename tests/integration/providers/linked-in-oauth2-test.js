@@ -12,7 +12,7 @@ var mockPopup = new MockPopup();
 
 var failPopup = new MockPopup({ state: 'invalid-state' });
 
-module('Linked In - Integration', {
+module('Integration | Provider | Linked In', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-service:mock-popup', mockPopup, {instantiate: false});

@@ -8,7 +8,7 @@ import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-module('Torii - Integration', {
+module('Integration | Torii', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-provider:dummy-success', DummySuccessProvider);

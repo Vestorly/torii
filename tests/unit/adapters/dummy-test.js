@@ -4,7 +4,7 @@ let { module, test } = QUnit;
 
 var adapter;
 
-module("DummyAdapter - Unit", {
+module('Unit | Adapter | DummyAdapter', {
   beforeEach() {
     adapter = DummyAdapter.create();
   },

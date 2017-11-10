@@ -16,7 +16,7 @@ var Provider = BaseProvider.extend({
   redirectUri: 'http://foo'
 });
 
-module('MockOauth1Provider (oauth1 subclass) - Unit', {
+module('Unit | Provider | MockOauth1Provider (oauth1 subclass)', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

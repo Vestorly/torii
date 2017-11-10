@@ -7,7 +7,7 @@ let { module, test } = QUnit;
 var provider;
 let originalConfiguration;
 
-module('Unit - GoogleAuth2Provider', {
+module('Unit | Provider | GoogleAuth2Provider', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

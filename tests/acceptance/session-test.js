@@ -11,7 +11,7 @@ function signIn(session, sessionData={}){
   sm.send('finishOpen', sessionData);
 }
 
-moduleForAcceptance('Session - Acceptance', {
+moduleForAcceptance('Acceptance | Session', {
   beforeEach() {
     this.container = this.application.__container__;
     this.torii   = this.container.lookup("service:torii");

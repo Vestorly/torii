@@ -6,7 +6,7 @@ const { test } = QUnit;
 
 let container;
 
-moduleForAcceptance('Testing Helper - Acceptance', {
+moduleForAcceptance('Acceptance | Testing Helper', {
   beforeEach() {
     container = this.application.__container__;
   }

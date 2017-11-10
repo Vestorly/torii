@@ -16,7 +16,7 @@ let obj,
     return get(obj, keyName);
   };
 
-module('QueryString - Unit', {
+module('Unit | Lib | QueryString', {
   beforeEach() {
     obj = Ember.Object.create({
       clientId:         clientId,

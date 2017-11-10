@@ -5,7 +5,7 @@ import { configure, getConfiguration } from 'torii/configuration';
 let { module, test } = QUnit;
 let originalConfiguration;
 
-module('Authenticated Route Mixin - Unit', {
+module('Unit | Routing | Authenticated Route Mixin', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({
@@ -160,7 +160,7 @@ test('failed authentication causes accessDenied action to be sent with transitio
         return Ember.RSVP.reject();
       }
     },
-    
+
     accessDenied: function(transition) {
       sentTransition = transition;
     }

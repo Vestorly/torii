@@ -21,7 +21,7 @@ function buildMockWindow(windowName, url){
   };
 }
 
-module('RedirectHandler - Unit');
+module('Unit | RedirectHandler');
 
 test('exists', function(assert){
   assert.ok(RedirectHandler);

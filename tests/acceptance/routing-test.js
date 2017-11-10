@@ -10,7 +10,7 @@ let { module, test } = QUnit;
 let configuration = rawConfig.torii;
 var app, originalSessionServiceName;
 
-module('Routing - Acceptance', {
+module('Acceptance | Routing', {
   beforeEach() {
     originalSessionServiceName = configuration.sessionServiceName;
     delete configuration.sessionServiceName;

@@ -22,7 +22,7 @@ var TokenProvider = BaseProvider.extend({
   responseType: 'token_id'
 });
 
-module('MockOauth2Provider (oauth2-code subclass) - Unit', {
+module('Unit | Provider | MockOauth2Provider (oauth2-code subclass)', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

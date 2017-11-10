@@ -11,7 +11,7 @@ import QUnit from 'qunit';
 
 const { module, test } = QUnit;
 
-module('Session (open) - Integration', {
+module('Integration | Session (open)', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('service:session', SessionService);
@@ -71,7 +71,7 @@ test("failed auth sets isAuthenticated to false, sets error", function(assert){
   });
 });
 
-module('Session (close) - Integration', {
+module('Integration | Session (close) ', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('service:session', SessionService);

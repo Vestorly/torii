@@ -7,7 +7,7 @@ let provider;
 let originalConfiguration;
 
 
-module('Unit - StripeConnectProvider', {
+module('Unit | Provider | StripeConnectProvider', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

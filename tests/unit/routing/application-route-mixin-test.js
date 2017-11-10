@@ -5,7 +5,7 @@ import { configure, getConfiguration } from 'torii/configuration';
 let { module, test } = QUnit;
 let originalConfiguration;
 
-module('Application Route Mixin - Unit', {
+module('Unit | Routing | Application Route Mixin', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

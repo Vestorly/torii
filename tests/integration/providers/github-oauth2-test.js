@@ -12,7 +12,7 @@ var mockPopup = new MockPopup();
 
 var failPopup = new MockPopup({ state: 'invalid-state' });
 
-module('Github - Integration', {
+module('Integration | Provider | Github', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     app.register('torii-service:mock-popup', mockPopup, {instantiate: false});

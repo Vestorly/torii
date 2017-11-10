@@ -14,7 +14,7 @@ let providerConfiguration;
 
 var torii, app;
 
-module('Facebook Connect - Integration', {
+module('Integration | Provider | Facebook Connect', {
   beforeEach() {
     app = startApp({loadInitializers: true});
     torii = lookup(app, 'service:torii');

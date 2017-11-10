@@ -9,7 +9,7 @@ const { module, test } = QUnit;
 
 var opened, mockPopup, providerConfig;
 
-module('Google Bearer- Integration', {
+module('Integration | Provider | Google Bearer', {
   beforeEach() {
     mockPopup = {
       open: function(){

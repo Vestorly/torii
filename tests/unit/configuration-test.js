@@ -14,7 +14,7 @@ var Testable = Ember.Object.extend({
     }),
     testable;
 
-module('Configuration - Unit', {
+module('Unit | Configuration', {
   beforeEach() {
     testable = Testable.create();
   },

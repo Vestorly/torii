@@ -14,7 +14,7 @@ var Provider = BaseProvider.extend({
   responseParams: ['state', 'access_token']
 });
 
-module('MockOauth2Provider (oauth2-bearer subclass) - Unit', {
+module('Unit | Provider | MockOauth2Provider (oauth2-bearer subclass)', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

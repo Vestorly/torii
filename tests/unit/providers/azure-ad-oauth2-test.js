@@ -7,7 +7,7 @@ let { module, test } = QUnit;
 let provider;
 let originalConfiguration;
 
-module('Unit - AzureAdOAuth2Provider', {
+module('Unit | Provider | AzureAdOAuth2Provider', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({

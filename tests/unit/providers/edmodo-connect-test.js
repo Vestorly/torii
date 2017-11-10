@@ -8,7 +8,7 @@ import QUnit from 'qunit';
 let { module, test } = QUnit;
 let originalConfiguration;
 
-module('Unit - EdmodoConnectProvider', {
+module('Unit | Provider | EdmodoConnectProvider', {
   beforeEach() {
     originalConfiguration = getConfiguration();
     configure({
