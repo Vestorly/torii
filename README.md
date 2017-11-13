@@ -60,6 +60,19 @@ export default Ember.Route.extend({
 torii.open('facebook') -> #open hook on the facebook provider -> returned authorization
 ```
 
+## Incremental authorization
+You can override the parameters defined in `config/environment.js` at runtime. A
+use case for this is when you want to do incremental authorization in your app.
+You can then modify the `scope` parameter for each call of `open`. E.g.
+
+```
+// For this call, 'some-other-scope' will be used instead of the scope defined
+// in `config/environment.js`
+torii.open('facebook', {
+  scope: 'some-other-scope'
+});
+```
+
 ## Session Management
 
 Torii can perform **session management** via the `session` service, injected onto
