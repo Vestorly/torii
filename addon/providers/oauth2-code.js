@@ -111,7 +111,7 @@ var Oauth2 = Provider.extend({
     return `${currentUrl()}torii/redirect.html`;
   }),
 
-  buildQueryString: function(){
+  buildQueryString: function(overriddenParams) {
     const providerGetter = (keyName) => {
       return get(this, keyName);
     };
@@ -119,13 +119,14 @@ var Oauth2 = Provider.extend({
     return buildQueryString(
       providerGetter,
       this.get('requiredUrlParams'),
-      this.get('optionalUrlParams')
+      this.get('optionalUrlParams'),
+      overriddenParams
     );
   },
 
-  buildUrl: function(){
+  buildUrl: function(overriddenParams) {
     var base = this.get('baseUrl'),
-        qs   = this.buildQueryString();
+        qs   = this.buildQueryString(overriddenParams);
 
     return `${base}?${qs}`;
   },
@@ -140,9 +141,9 @@ var Oauth2 = Provider.extend({
    * If there was an error or the user either canceled the authorization or
    * closed the popup window, the promise rejects.
    */
-  open: function(options){
+  open: function(options) {
     var name        = this.get('name'),
-        url         = this.buildUrl(),
+        url         = this.buildUrl(options),
         redirectUri = this.get('redirectUri'),
         responseParams = this.get('responseParams'),
         responseType = this.get('responseType'),

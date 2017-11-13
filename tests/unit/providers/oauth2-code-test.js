@@ -115,6 +115,43 @@ test("Provider#open generates a URL with optional scope", function(assert) {
   );
 });
 
+test("Provider#open accepts overrideable parameters", function(assert) {
+  const Subclass = BaseProvider.extend({
+    name: 'mock-oauth2',
+    baseUrl: 'http://example.com',
+    responseParams: [],
+    redirectUri: 'http://foo'
+  });
+  const provider = Subclass.create();
+
+  configure({
+    providers: {
+      'mock-oauth2': {
+        apiKey: 'dummyKey',
+        scope: 'someScope'
+      }
+    }
+  });
+
+  const state = provider.get('state');
+
+  const open = sinon.stub().resolves({});
+  provider.set('popup', {
+    open: open
+  });
+
+  provider.open({
+    scope: 'overriddenScope'
+  });
+
+  assert.ok(
+    open.calledWith(
+      `http://example.com?response_type=code&client_id=dummyKey&redirect_uri=http%3A%2F%2Ffoo&state=${state}&scope=overriddenScope`,
+    ),
+    'generates the correct URL'
+  );
+});
+
 test('Provider#open assert.throws when any required response params are missing', async function(assert) {
   assert.expect(2);
 

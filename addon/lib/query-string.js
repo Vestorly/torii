@@ -1,6 +1,6 @@
 const camelize = Ember.String.camelize;
 
-function buildQueryString(objGetter, requiredParams, optionalParams) {
+function buildQueryString(objGetter, requiredParams, optionalParams, overriddenParams = {}) {
   const urlParams = Ember.A(requiredParams.slice()).uniq();
 
   const optionalUrlParams = Ember
@@ -17,14 +17,20 @@ function buildQueryString(objGetter, requiredParams, optionalParams) {
 
   const keyValuePairs = Ember.A([]);
 
+  const overriddenParamGetter = (keyName) => {
+    return overriddenParams[keyName];
+  };
+
   urlParams.forEach(function(paramName) {
-    const paramValue = getParamValue(objGetter, paramName);
+    const paramValue = getOptionalParamValue(overriddenParamGetter, paramName) ||
+      getParamValue(objGetter, paramName);
 
     keyValuePairs.push([paramName, paramValue]);
   });
 
   optionalUrlParams.forEach(function(paramName) {
-    const paramValue = getOptionalParamValue(objGetter, paramName);
+    const paramValue = getOptionalParamValue(overriddenParamGetter, paramName) ||
+      getOptionalParamValue(objGetter, paramName);
 
     if (isValue(paramValue)) {
       keyValuePairs.push([paramName, paramValue]);
