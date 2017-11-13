@@ -151,6 +151,23 @@ test('#buildQueryString - assert.throws if optionalParams includes any requiredP
   );
 });
 
+test('#buildQueryString - can add overrideable parameters', function(assert) {
+  const qs = buildQueryString(
+    objGetter,
+    ['client_id'],
+    [],
+    {
+      clientId: 'overridden-client-id'
+    }
+  );
+
+  assert.equal(
+    qs,
+    `client_id=overridden-client-id`,
+    'overrides the configured clientId'
+  );
+});
+
 test('#parseQueryString - parses each passed key', function(assert){
   const result = parseQueryString(
     'http://localhost.dev:3000/xyz/?code=abcdef',
