@@ -350,18 +350,16 @@ signIn: function() {
   // Set a value that will result in the placeholder component being
   // added to the DOM
   route.controller.set('signingIn',true);
-  // We need to user Ember.run.next to make sure that the placeholder
-  // component has been added to the DOM before session.open is called
-  Ember.run.schedule('afterRender', this, function(){
-    Ember.$('#signin-modal-back').one('click',function(){
+},
+
+// We need to use another action to ensure that the placeholder
+// component has been added to the DOM before session.open is called
+openToriiSession: function() {
+  this.get("session")
+    .open("clickfunnels-oauth2")
+    .then(function(){
       route.controller.set('signingIn',false);
     });
-    this.get("session")
-      .open("clickfunnels-oauth2")
-      .then(function(){
-        route.controller.set('signingIn',false);
-      });
-  });
 }
 ```
 
@@ -372,7 +370,8 @@ Then in `templates/application.hbs` you might have:
 <div id="signin-modal-back">
   <div id="signin-modal-frame">
     <div id="signin-modal-content">
-      {{torii-iframe-placeholder}}
+      {{torii-iframe-placeholder 
+          didInsertToriiIframePlaceholder="openToriiSession"}}
     </div>
   </div>
 </div>
