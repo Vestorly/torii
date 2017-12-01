@@ -1,12 +1,10 @@
 import { run } from '@ember/runloop';
-import EmberObject from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import QUnit from 'qunit';
 import { buildQueryString, parseQueryString } from 'torii/lib/query-string';
 
 let { module, test } = QUnit;
 let { freeze } = Object;
-
-const get = Ember.get;
 
 let obj,
   clientId = 'abcdef',
