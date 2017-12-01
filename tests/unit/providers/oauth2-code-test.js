@@ -1,3 +1,5 @@
+import { resolve } from 'rsvp';
+import { run } from '@ember/runloop';
 import { getConfiguration, configure } from 'torii/configuration';
 import BaseProvider from 'torii/providers/oauth2-code';
 import QUnit from 'qunit';
@@ -35,7 +37,7 @@ module('Unit | Provider | MockOauth2Provider (oauth2-code subclass)', {
     tokenProvider = TokenProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });
@@ -94,16 +96,16 @@ test('Provider#open assert.throws when any required response params are missing'
   });
 
   var mockPopup = {
-    open: function(/*url, responseParams*/){
+    open() /*url, responseParams*/{
       assert.ok(true, 'calls popup.open');
 
-      return Ember.RSVP.resolve({state: 'state'});
+      return resolve({state: 'state'});
     }
   };
 
   provider.set('popup', mockPopup);
 
-  Ember.run(function(){
+  run(function(){
     provider.open().then(function(){
       assert.ok(false, '#open should not resolve');
     }).catch(function(e){
@@ -128,15 +130,15 @@ test('should use the value of provider.responseType as key for the authorization
   });
 
   var mockPopup = {
-    open: function(/*url, responseParams*/){
+    open() /*url, responseParams*/{
       assert.ok(true, 'calls popup.open');
-      return Ember.RSVP.resolve({ 'token_id': 'test', 'authorization_code': 'pief', 'state': 'test-state' });
+      return resolve({ 'token_id': 'test', 'authorization_code': 'pief', 'state': 'test-state' });
     }
   };
 
   tokenProvider.set('popup', mockPopup);
 
-  Ember.run(function(){
+  run(function(){
     tokenProvider.open().then(function(res){
       assert.ok(res.authorizationCode === 'test', 'authenticationToken present');
     });
@@ -190,8 +192,8 @@ test('URI-decodes the authorization code', function(assert){
   });
 
   var mockPopup = {
-    open: function(/*url, responseParams*/){
-      return Ember.RSVP.resolve({
+    open() /*url, responseParams*/{
+      return resolve({
         'token_id': encodeURIComponent('test=='),
         'authorization_code': 'pief',
         'state': 'test-state'
@@ -201,7 +203,7 @@ test('URI-decodes the authorization code', function(assert){
 
   tokenProvider.set('popup', mockPopup);
 
-  Ember.run(function(){
+  run(function(){
     tokenProvider.open().then(function(res){
       assert.equal(res.authorizationCode, 'test==', 'authorizationCode decoded');
     });

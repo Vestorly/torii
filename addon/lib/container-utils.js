@@ -1,3 +1,5 @@
+import { getOwner as EmberGetOwner } from '@ember/application';
+
 export function hasRegistration(application, name) {
   if (application && application.hasRegistration) {
     return application.hasRegistration(name);
@@ -38,8 +40,8 @@ export function lookup(applicationInstance, name) {
 }
 
 export function getOwner(instance) {
-  if (Ember.getOwner) {
-    return Ember.getOwner(instance);
+  if (EmberGetOwner) {
+    return EmberGetOwner(instance);
   } else {
     return instance.container;
   }

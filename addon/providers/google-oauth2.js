@@ -4,7 +4,7 @@
  */
 
 import Oauth2 from 'torii/providers/oauth2-code';
-import {configurable} from 'torii/configuration';
+import { configurable } from 'torii/configuration';
 
 var GoogleOauth2 = Oauth2.extend({
 

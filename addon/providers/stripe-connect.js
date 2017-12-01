@@ -1,5 +1,5 @@
 import Oauth2 from 'torii/providers/oauth2-code';
-import {configurable} from 'torii/configuration';
+import { configurable } from 'torii/configuration';
 
 export default Oauth2.extend({
   name:       'stripe-connect',

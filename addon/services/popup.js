@@ -1,3 +1,6 @@
+import Evented from '@ember/object/evented';
+import EmberObject from '@ember/object';
+import $ from 'jquery';
 import UiServiceMixin from 'torii/mixins/ui-service-mixin';
 
 function stringifyOptions(options){
@@ -26,7 +29,7 @@ function stringifyOptions(options){
 function prepareOptions(options){
   var width = options.width || 500,
       height = options.height || 500;
-  return Ember.$.extend({
+  return $.extend({
     left: ((screen.width / 2) - (width / 2)),
     top: ((screen.height / 2) - (height / 2)),
     width: width,
@@ -34,18 +37,18 @@ function prepareOptions(options){
   }, options);
 }
 
-var Popup = Ember.Object.extend(Ember.Evented, UiServiceMixin, {
+var Popup = EmberObject.extend(Evented, UiServiceMixin, {
 
   // Open a popup window.
-  openRemote: function(url, pendingRequestKey, options){
+  openRemote(url, pendingRequestKey, options) {
     var optionsString = stringifyOptions(prepareOptions(options || {}));
     this.remote = window.open(url, pendingRequestKey, optionsString);
   },
 
-  closeRemote: function(){
+  closeRemote() {
   },
 
-  pollRemote: function(){
+  pollRemote() {
     if (!this.remote) {
       return;
     }

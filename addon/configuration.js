@@ -1,10 +1,10 @@
-var get = Ember.get;
+import { get, computed } from '@ember/object';
 
 const NAMESPACE = 'providers';
 let configuration = {};
 
 function configurable(configKey, defaultValue){
-  return Ember.computed(function configurableComputed(){
+  return computed(function configurableComputed(){
     // Trigger super wrapping in Ember 2.1.
     // See: https://github.com/emberjs/ember.js/pull/12359
     this._super = this._super || (function(){ throw new Error('should always have _super'); })();

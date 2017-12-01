@@ -1,7 +1,6 @@
+import { computed } from '@ember/object';
 import Oauth2 from 'torii/providers/oauth2-code';
-import {configurable} from 'torii/configuration';
-
-var computed = Ember.computed;
+import { configurable } from 'torii/configuration';
 
 /**
  * This class implements authentication against AzureAD

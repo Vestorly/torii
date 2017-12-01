@@ -1,9 +1,9 @@
 var PopupIdSerializer = {
-  serialize: function(popupId){
+  serialize(popupId) {
     return "torii-popup:" + popupId;
   },
 
-  deserialize: function(serializedPopupId){
+  deserialize(serializedPopupId) {
     if (!serializedPopupId){
       return null;
     }

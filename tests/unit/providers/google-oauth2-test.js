@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import { getConfiguration, configure } from 'torii/configuration';
 
 import GoogleProvider from 'torii/providers/google-oauth2';
@@ -18,7 +19,7 @@ module('Unit | Provider | GoogleAuth2Provider', {
     provider = GoogleProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

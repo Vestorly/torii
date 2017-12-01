@@ -1,5 +1,7 @@
+import { computed } from '@ember/object';
+
 function requiredProperty(){
-  return Ember.computed(function(key){
+  return computed(function(key){
     throw new Error("Definition of property "+key+" by a subclass is required.");
   });
 }

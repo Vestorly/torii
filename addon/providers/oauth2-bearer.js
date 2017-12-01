@@ -13,7 +13,7 @@ var Oauth2Bearer = Provider.extend({
    * If there was an error or the user either canceled the authorization or
    * closed the popup window, the promise rejects.
    */
-  open: function(options){
+  open(options) {
     var name        = this.get('name'),
         url         = this.buildUrl(),
         redirectUri = this.get('redirectUri'),

@@ -7,10 +7,14 @@
  * unless it detects the presence of the global `window.FB`.
  */
 
-import Provider from 'torii/providers/base';
-import {configurable} from 'torii/configuration';
+import { run } from '@ember/runloop';
 
-var on = Ember.on;
+import { Promise as EmberPromise } from 'rsvp';
+import { on } from '@ember/object/evented';
+
+import Provider from 'torii/providers/base';
+import { configurable } from 'torii/configuration';
+
 var fbPromise;
 
 function fbLoad(settings){
@@ -19,13 +23,13 @@ function fbLoad(settings){
   var original = window.fbAsyncInit;
   var locale = settings.locale;
   delete settings.locale;
-  fbPromise = new Ember.RSVP.Promise(function(resolve){
+  fbPromise = new EmberPromise(function(resolve){
     if (window.FB) {
       return resolve();
     }
     window.fbAsyncInit = function(){
       FB.init(settings);
-      Ember.run(null, resolve);
+      run(null, resolve);
     };
     $.getScript('//connect.facebook.net/' + locale + '/sdk.js');
   }).then(function(){
@@ -40,12 +44,12 @@ function fbLoad(settings){
 }
 
 function fbLogin(scope, returnScopes, authType){
-  return new Ember.RSVP.Promise(function(resolve, reject){
+  return new EmberPromise(function(resolve, reject){
     FB.login(function(response){
       if (response.authResponse) {
-        Ember.run(null, resolve, response.authResponse);
+        run(null, resolve, response.authResponse);
       } else {
-        Ember.run(null, reject, response.status);
+        run(null, reject, response.status);
       }
     }, { scope: scope, return_scopes: returnScopes, auth_type: authType });
   });
@@ -77,7 +81,7 @@ var Facebook = Provider.extend({
 
   // API:
   //
-  open: function(options){
+  open(options) {
     if (options === undefined) options = {};
     var scope = this.get('scope');
     var authType = options.authType;
@@ -90,7 +94,7 @@ var Facebook = Provider.extend({
       .then(fbNormalize);
   },
 
-  settings: function(){
+  settings() {
     return {
       status: true,
       cookie: true,

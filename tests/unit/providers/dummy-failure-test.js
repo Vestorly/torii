@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 var provider;
 
 import Provider from '../../helpers/dummy-failure-provider';
@@ -10,12 +11,12 @@ module('Unit | Provider | DummyFailureProvider', {
     provider = Provider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
   }
 });
 
 test("Provider rejects on open", function(assert){
-  Ember.run(function(){
+  run(function(){
     provider.open().then(function(){
       assert.ok(false, 'dummy-success fulfilled an open promise');
     }, function(){

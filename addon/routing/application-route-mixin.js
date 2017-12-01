@@ -1,7 +1,8 @@
+import Mixin from '@ember/object/mixin';
 import { getConfiguration } from 'torii/configuration';
 
-export default Ember.Mixin.create({
-  beforeModel: function (transition) {
+export default Mixin.create({
+  beforeModel(transition) {
     var route = this;
     var superBefore = this._super.apply(this, arguments);
     if (superBefore && superBefore.then) {
@@ -12,7 +13,7 @@ export default Ember.Mixin.create({
       return route.checkLogin(transition);
     }
   },
-  checkLogin: function () {
+  checkLogin() {
     let configuration = getConfiguration();
     return this.get(configuration.sessionServiceName).fetch()
       .catch(function(){

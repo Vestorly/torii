@@ -1,5 +1,6 @@
 /* eslint-env node */
 module.exports = {
+  useYarn: true,
   scenarios: [
     {
       name: 'Ember 1.12.1',

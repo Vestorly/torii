@@ -1,3 +1,5 @@
+import Service from '@ember/service';
+import { Promise as EmberPromise } from 'rsvp';
 import { getOwner } from 'torii/lib/container-utils';
 
 function lookupProvider(container, providerName){
@@ -18,10 +20,10 @@ function proxyToProvider(methodName, requireMethod){
         throw new Error("Expected provider '"+providerName+"' to define " +
                         "the '"+methodName+"' method.");
       } else {
-        return Ember.RSVP.Promise.resolve({});
+        return EmberPromise.resolve({});
       }
     }
-    return new Ember.RSVP.Promise(function(resolve){
+    return new EmberPromise(function(resolve){
       resolve( provider[methodName](options) );
     });
   };
@@ -43,7 +45,7 @@ function proxyToProvider(methodName, requireMethod){
  *
  * @class Torii
  */
-export default Ember.Service.extend({
+export default Service.extend({
 
   /**
    * Open an authorization against an API. A promise resolving

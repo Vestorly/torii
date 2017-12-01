@@ -1,12 +1,13 @@
+import { merge } from '@ember/polyfills';
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 import buildFBMock from '../../helpers/build-fb-mock';
 import { configure } from 'torii/configuration';
 import startApp from '../../helpers/start-app';
 import lookup from '../../helpers/lookup';
 import QUnit from 'qunit';
-import Ember from 'ember';
 
 const { module, test } = QUnit;
-const { $ } = Ember;
 
 var originalGetScript = $.getScript,
     originalFB = window.FB;
@@ -31,7 +32,7 @@ module('Integration | Provider | Facebook Connect', {
   afterEach() {
     window.FB = originalFB;
     $.getScript = originalGetScript;
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
@@ -39,7 +40,7 @@ test("Opens facebook connect session", function(assert){
   $.getScript = function(){
     window.fbAsyncInit();
   };
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-connect').then(function(){
       assert.ok(true, "Facebook connect opened");
     }, function(e){
@@ -54,10 +55,10 @@ test("Returns the scopes granted when configured", function(assert){
   };
   configure({
     providers: {
-      'facebook-connect': Ember.merge(providerConfiguration, {returnScopes: true})
+      'facebook-connect': merge(providerConfiguration, {returnScopes: true})
     }
   });
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-connect').then(function(data){
       assert.equal('email', data.grantedScopes);
     });
@@ -68,7 +69,7 @@ test("Supports custom auth_type on login", function(assert){
   $.getScript = function(){
     window.fbAsyncInit();
   };
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-connect', {authType: 'rerequest'}).then(function(data){
       assert.equal(5678, data.expiresIn, 'expriesIn extended when rerequest found');
     });

@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import { getConfiguration, configure } from 'torii/configuration';
 
 import QUnit from 'qunit';
@@ -27,7 +28,7 @@ module('Unit | Provider | MockOauth1Provider (oauth1 subclass)', {
     provider = Provider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

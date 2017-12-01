@@ -1,4 +1,5 @@
 import { parseQueryString } from 'torii/lib/query-string';
+import { resolve } from 'rsvp';
 
 var MockPopup = function(options) {
   options = options || {};
@@ -23,7 +24,7 @@ MockPopup.prototype.open = function(url, keys){
     response.state = state;
   }
 
-  return Ember.RSVP.resolve(response);
+  return resolve(response);
 };
 
 export default MockPopup;

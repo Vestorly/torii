@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 var provider;
 
 import { getConfiguration, configure } from 'torii/configuration';
@@ -19,7 +20,7 @@ module('Unit | Provider | GoogleAuth2BearerProvider', {
     provider = GoogleBearerProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

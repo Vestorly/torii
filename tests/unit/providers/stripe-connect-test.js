@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import { getConfiguration, configure } from 'torii/configuration';
 import StripeConnectProvider from 'torii/providers/stripe-connect';
 import QUnit from 'qunit';
@@ -18,7 +19,7 @@ module('Unit | Provider | StripeConnectProvider', {
     provider = StripeConnectProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

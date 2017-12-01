@@ -5,7 +5,7 @@ import config from '../config/environment';
 
 var initializer = {
   name: 'torii',
-  initialize: function(application) {
+  initialize(application) {
     if (arguments[1]) { // Ember < 2.1
       application = arguments[1];
     }

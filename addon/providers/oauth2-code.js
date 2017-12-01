@@ -1,12 +1,10 @@
+import { computed } from '@ember/object';
 import Provider from 'torii/providers/base';
-import {configurable} from 'torii/configuration';
+import { configurable } from 'torii/configuration';
 import { buildQueryString } from 'torii/lib/query-string';
 import requiredProperty from 'torii/lib/required-property';
 import randomUrlSafe from 'torii/lib/random-url-safe';
-
-const get = Ember.get;
-
-var computed = Ember.computed;
+import { get } from '@ember/object';
 
 function currentUrl(){
   var url = [window.location.protocol,
@@ -111,7 +109,7 @@ var Oauth2 = Provider.extend({
     return `${currentUrl()}torii/redirect.html`;
   }),
 
-  buildQueryString: function(){
+  buildQueryString() {
     const providerGetter = (keyName) => {
       return get(this, keyName);
     };
@@ -123,7 +121,7 @@ var Oauth2 = Provider.extend({
     );
   },
 
-  buildUrl: function(){
+  buildUrl() {
     var base = this.get('baseUrl'),
         qs   = this.buildQueryString();
 
@@ -140,7 +138,7 @@ var Oauth2 = Provider.extend({
    * If there was an error or the user either canceled the authorization or
    * closed the popup window, the promise rejects.
    */
-  open: function(options){
+  open(options) {
     var name        = this.get('name'),
         url         = this.buildUrl(),
         redirectUri = this.get('redirectUri'),

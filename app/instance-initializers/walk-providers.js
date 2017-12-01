@@ -3,7 +3,7 @@ import { getConfiguration } from 'torii/configuration';
 
 export default {
   name: 'torii-walk-providers',
-  initialize: function(applicationInstance){
+  initialize(applicationInstance) {
     let configuration = getConfiguration();
     // Walk all configured providers and eagerly instantiate
     // them. This gives providers with initialization side effects

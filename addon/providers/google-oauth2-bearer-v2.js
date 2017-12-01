@@ -1,6 +1,7 @@
+import $ from 'jquery';
+import { Promise as EmberPromise } from 'rsvp';
 import OAuth2Code from 'torii/providers/oauth2-code';
-import {configurable} from 'torii/configuration';
-import Ember from 'ember';
+import { configurable } from 'torii/configuration';
 
 /**
  * This class implements a provider allowing authentication against google's
@@ -42,7 +43,7 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
    * If there was an error or the user either canceled the authorization or
    * closed the popup window, the promise rejects.
    */
-  open: function(options){
+  open(options) {
 
     var name        = this.get('name'),
         url         = this.buildUrl(),
@@ -76,16 +77,16 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
 
       // Token validation. For details, see
       // https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken
-      return new Ember.RSVP.Promise( function (resolve, reject) {
+      return new EmberPromise( function (resolve, reject) {
         // Token validation request
-        Ember.$.ajax(
+        $.ajax(
           {
             type: 'GET',
             url: tokenValidationUrl,
             data: {
               'access_token': authData['access_token']
             },
-            success: function (jsonResponse) {
+            success(jsonResponse) {
               /* the response is a JSON that looks like:
               {
                 "audience":"8819981768.apps.googleusercontent.com",
@@ -118,7 +119,7 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
                   "attack."));
               }
             },
-            error: function (jqXHR, textStatus) {
+            error(jqXHR, textStatus) {
               // authentication failed because the validation request failed
               reject(new Error("Token validation request failed with status '" +
                 textStatus + "' (server '" + tokenValidationUrl + "' '" +
@@ -132,7 +133,7 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
     });
   },
 
-  fetch: function (authenticationData) {
+  fetch(authenticationData) {
     // this is the most basic for ember-simple-auth to work with this provider,
     // but the session could actually be checked and renewed here if the token
     // is too old.

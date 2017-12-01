@@ -4,18 +4,18 @@
  */
 
 import Provider from 'torii/providers/base';
-import {configurable} from 'torii/configuration';
+import { configurable } from 'torii/configuration';
 
 var Oauth1 = Provider.extend({
   name: 'oauth1',
 
   requestTokenUri: configurable('requestTokenUri'),
 
-  buildRequestTokenUrl: function(){
+  buildRequestTokenUrl() {
     return this.get('requestTokenUri');
   },
 
-  open: function(options){
+  open(options) {
     var name        = this.get('name'),
         url         = this.buildRequestTokenUrl();
 

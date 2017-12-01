@@ -3,10 +3,14 @@
  * a dummy authorization object.
  */
 
-export default Ember.Object.extend({
+import { Promise as EmberPromise } from 'rsvp';
 
-  open: function(authorization){
-    return Ember.RSVP.Promise.resolve(authorization);
+import EmberObject from '@ember/object';
+
+export default EmberObject.extend({
+
+  open(authorization) {
+    return EmberPromise.resolve(authorization);
   }
 
 });

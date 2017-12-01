@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+import { htmlSafe } from '@ember/string';
 
 export function inspectObject([obj]/*, hash*/) {
-  return Ember.String.htmlSafe(JSON.stringify(obj));
+  return htmlSafe(JSON.stringify(obj));
 }
 
-export default Ember.Helper.helper(inspectObject);
+export default helper(inspectObject);
