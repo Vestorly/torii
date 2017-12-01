@@ -1,11 +1,10 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import EmberObject, { get } from '@ember/object';
 import QUnit from 'qunit';
 import { buildQueryString, parseQueryString } from 'torii/lib/query-string';
 
 let { module, test } = QUnit;
 let { freeze } = Object;
-
-const get = Ember.get;
 
 let obj,
   clientId = 'abcdef',
@@ -18,7 +17,7 @@ let obj,
 
 module('Unit | Lib | QueryString', {
   beforeEach() {
-    obj = Ember.Object.create({
+    obj = EmberObject.create({
       clientId:         clientId,
       responseType:     responseType,
       redirectUri:      redirectUri,
@@ -28,7 +27,7 @@ module('Unit | Lib | QueryString', {
     });
   },
   afterEach() {
-    Ember.run(obj, 'destroy');
+    run(obj, 'destroy');
   }
 });
 

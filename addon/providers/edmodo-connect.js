@@ -1,5 +1,5 @@
 import Oauth2Bearer from 'torii/providers/oauth2-bearer';
-import {configurable} from 'torii/configuration';
+import { configurable } from 'torii/configuration';
 
 /*
 * This class implements authentication against Edmodo

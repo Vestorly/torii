@@ -1,3 +1,6 @@
+import { later } from '@ember/runloop';
+import { Promise as EmberPromise, reject } from 'rsvp';
+import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'torii/routing/application-route-mixin';
 import QUnit from 'qunit';
 import { configure, getConfiguration } from 'torii/configuration';
@@ -20,14 +23,14 @@ module('Unit | Routing | Application Route Mixin', {
 test("beforeModel calls checkLogin after _super#beforeModel", function(assert){
   var route;
   var callOrder = [];
-  route = Ember.Route
+  route = Route
     .extend({
-      beforeModel: function() {
+      beforeModel() {
         callOrder.push('super');
       }
     })
     .extend(ApplicationRouteMixin, {
-      checkLogin: function() {
+      checkLogin() {
         callOrder.push('mixin');
       }
     }).create();
@@ -41,11 +44,11 @@ test("beforeModel calls checkLogin after _super#beforeModel", function(assert){
 test("beforeModel calls checkLogin after promise from _super#beforeModel is resolved", function(assert){
   var route;
   var callOrder = [];
-  route = Ember.Route
+  route = Route
     .extend({
-      beforeModel: function() {
-        return new Ember.RSVP.Promise(function(resolve){
-          Ember.run.later(function(){
+      beforeModel() {
+        return new EmberPromise(function(resolve){
+          later(function(){
             callOrder.push('super');
             resolve();
           }, 20);
@@ -53,7 +56,7 @@ test("beforeModel calls checkLogin after promise from _super#beforeModel is reso
       }
     })
     .extend(ApplicationRouteMixin, {
-      checkLogin: function() {
+      checkLogin() {
         callOrder.push('mixin');
       }
     }).create();
@@ -69,11 +72,11 @@ test('checkLogic fails silently when no session is available', function(assert){
   assert.expect(2);
 
   var fetchCalled = false;
-  var route = Ember.Route.extend(ApplicationRouteMixin, {
+  var route = Route.extend(ApplicationRouteMixin, {
     session: {
-      fetch: function() {
+      fetch() {
         fetchCalled = true;
-        return Ember.RSVP.reject('no session is available');
+        return reject('no session is available');
       }
     }
   }).create();

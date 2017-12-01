@@ -4,7 +4,7 @@ import RedirectHandler from 'torii/redirect-handler';
 export default {
   name: 'torii-callback',
   before: 'torii',
-  initialize: function(application) {
+  initialize(application) {
     if (arguments[1]) { // Ember < 2.1
       application = arguments[1];
     }

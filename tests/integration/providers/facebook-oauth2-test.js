@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 var torii, app;
 
 import { configure } from 'torii/configuration';
@@ -28,12 +29,12 @@ module('Integration | Provider | Facebook OAuth2', {
   },
   afterEach() {
     mockPopup.opened = false;
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
 test("Opens a popup to Facebook", function(assert){
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-oauth2').finally(function(){
       assert.ok(mockPopup.opened, "Popup service is opened");
     });
@@ -41,7 +42,7 @@ test("Opens a popup to Facebook", function(assert){
 });
 
 test("Resolves with an authentication object containing 'redirectUri'", function(assert){
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-oauth2').then(function(data){
       assert.ok(data.redirectUri,
          'Object has redirectUri');
@@ -54,7 +55,7 @@ test("Resolves with an authentication object containing 'redirectUri'", function
 test('Validates the state parameter in the response', function(assert){
   app.inject('torii-provider', 'popup', 'torii-service:fail-popup');
 
-  Ember.run(function(){
+  run(function(){
     torii.open('facebook-oauth2').then(null, function(e){
       assert.ok(/has an incorrect session state/.test(e.message),
          'authentication fails due to invalid session state response');

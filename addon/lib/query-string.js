@@ -1,11 +1,9 @@
-const camelize = Ember.String.camelize;
+import { A } from '@ember/array';
+import { camelize } from '@ember/string';
 
 function buildQueryString(objGetter, requiredParams, optionalParams, overriddenParams = {}) {
-  const urlParams = Ember.A(requiredParams.slice()).uniq();
-
-  const optionalUrlParams = Ember
-    .A(optionalParams ? optionalParams.slice() : [])
-    .uniq();
+  const urlParams = A(requiredParams.slice()).uniq();
+  const optionalUrlParams = A(optionalParams ? optionalParams.slice() : []).uniq();
 
   optionalUrlParams.forEach((param) => {
     if (urlParams.indexOf(param) > -1) {
@@ -15,7 +13,7 @@ function buildQueryString(objGetter, requiredParams, optionalParams, overriddenP
     }
   });
 
-  const keyValuePairs = Ember.A([]);
+  const keyValuePairs = A([]);
 
   const overriddenParamGetter = (keyName) => {
     return overriddenParams[keyName];

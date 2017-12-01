@@ -1,3 +1,6 @@
+/* eslint-disable ember/new-module-imports */
+
+import Ember from 'ember';
 import bootstrapRouting from 'torii/bootstrap/routing';
 import { getConfiguration } from 'torii/configuration';
 import getRouterInstance from 'torii/compat/get-router-instance';
@@ -6,7 +9,7 @@ import "torii/router-dsl-ext";
 
 export default {
   name: 'torii-setup-routes',
-  initialize: function(applicationInstance, registry){
+  initialize(applicationInstance /*, registry */){
     const configuration = getConfiguration();
 
     if (!configuration.sessionServiceName) {

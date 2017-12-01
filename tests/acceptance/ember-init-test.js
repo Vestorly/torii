@@ -1,3 +1,7 @@
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import Controller from '@ember/controller';
+import { run } from '@ember/runloop';
 import startApp from '../helpers/start-app';
 import configuration from '../../config/environment';
 import lookup from '../helpers/lookup';
@@ -22,7 +26,7 @@ module('Acceptance | Ember Initialization', {
 
   afterEach() {
     toriiConfiguration.sessionServiceName = originalSessionServiceName;
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 
@@ -30,7 +34,7 @@ test('session is not injected by default', function(assert){
   this.application = startApp();
   assert.ok(!lookup(this.application, 'service:session'));
 
-  this.application.register('controller:application', Ember.Controller.extend());
+  this.application.register('controller:application', Controller.extend());
   var controller = lookup(this.application, 'controller:application');
   assert.ok(!controller.get('session'), 'controller has no session');
 });
@@ -41,7 +45,7 @@ test('session is injected with the name in the configuration', function(assert){
   this.application = startApp();
   assert.ok(lookup(this.application, 'service:wackySessionName'), 'service:wackySessionName is injected');
 
-  this.application.register('controller:application', Ember.Controller.extend());
+  this.application.register('controller:application', Controller.extend());
   var controller = lookup(this.application, 'controller:application');
 
   assert.ok(controller.get('wackySessionName'),
@@ -57,9 +61,9 @@ test('session is injectable using inject.service', function(assert){
   this.application = startApp();
   assert.ok(lookup(this.application, 'service:session'), 'service:session is injected');
 
-  this.application.register('component:testComponent', Ember.Component.extend({
-    session: Ember.inject.service('session'),
-    torii: Ember.inject.service('torii')
+  this.application.register('component:testComponent', Component.extend({
+    session: service('session'),
+    torii: service('torii')
   }));
 
   var DummyRenderer = { componentInitAttrs() {} };

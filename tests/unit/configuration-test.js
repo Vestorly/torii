@@ -1,9 +1,11 @@
+import { run } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import { configurable, configure } from 'torii/configuration';
 import QUnit from 'qunit';
 
 let { module, test } = QUnit;
 
-var Testable = Ember.Object.extend({
+var Testable = EmberObject.extend({
       name: 'test',
       required: configurable('apiKey'),
       defaulted: configurable('scope', 'email'),
@@ -19,7 +21,7 @@ module('Unit | Configuration', {
     testable = Testable.create();
   },
   afterEach() {
-    Ember.run(testable, 'destroy');
+    run(testable, 'destroy');
   }
 });
 

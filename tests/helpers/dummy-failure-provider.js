@@ -2,10 +2,14 @@
  * This class emulates a failed authentication.
  */
 
-export default Ember.Object.extend({
+import { reject } from 'rsvp';
 
-  open: function(){
-    return Ember.RSVP.reject("Dummy authentication failure");
+import EmberObject from '@ember/object';
+
+export default EmberObject.extend({
+
+  open() {
+    return reject("Dummy authentication failure");
   }
 
 });

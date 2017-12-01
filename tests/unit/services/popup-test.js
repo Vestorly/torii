@@ -1,3 +1,5 @@
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 import Popup from 'torii/services/popup';
 import PopupIdSerializer from 'torii/lib/popup-id-serializer';
 import { CURRENT_REQUEST_KEY } from "torii/mixins/ui-service-mixin";
@@ -19,14 +21,14 @@ var buildMockWindow = function(windowName){
 
 var buildPopupIdGenerator = function(popupId){
   return {
-    generate: function(){
+    generate() {
       return popupId;
     }
   };
 };
 
 var buildMockStorageEvent = function(popupId, redirectUrl){
-  return Ember.$.Event('storage', {
+  return $.Event('storage', {
     originalEvent: {
       key: PopupIdSerializer.serialize(popupId),
       newValue: redirectUrl
@@ -42,7 +44,7 @@ module('Unit | Service | Popup', {
   afterEach() {
     localStorage.removeItem(CURRENT_REQUEST_KEY);
     window.open = originalWindowOpen;
-    Ember.run(popup, 'destroy');
+    run(popup, 'destroy');
   }
 });
 
@@ -68,7 +70,7 @@ test("open resolves based on popup window", function(assert){
     return mockWindow;
   };
 
-  Ember.run(function(){
+  run(function(){
     popup.open(expectedUrl, ['code']).then(function(data){
       assert.ok(true, 'resolves promise');
       assert.equal(popupId, PopupIdSerializer.deserialize(mockWindow.name), "sets the window's name properly");
@@ -87,7 +89,7 @@ test("open resolves based on popup window", function(assert){
 
   localStorage.setItem(PopupIdSerializer.serialize(popupId), redirectUrl);
   // Need to manually trigger storage event, since it doesn't fire in the current window
-  Ember.$(window).trigger(buildMockStorageEvent(popupId, redirectUrl));
+  $(window).trigger(buildMockStorageEvent(popupId, redirectUrl));
 });
 
 test("open rejects when window does not open", function(assert){
@@ -99,7 +101,7 @@ test("open rejects when window does not open", function(assert){
     return closedWindow;
   };
 
-  Ember.run(function(){
+  run(function(){
     popup.open('http://some-url.com', ['code']).then(function(){
       assert.ok(false, 'resolves promise');
     }, function(){
@@ -117,7 +119,7 @@ test("open does not resolve when receiving a storage event for the wrong popup i
     return buildMockWindow();
   };
 
-  var promise = Ember.run(function(){
+  var promise = run(function(){
     return popup.open('http://someserver.com', ['code']).then(function(){
       assert.ok(false, 'resolves the open promise');
     }, function(){
@@ -127,7 +129,7 @@ test("open does not resolve when receiving a storage event for the wrong popup i
 
   localStorage.setItem(PopupIdSerializer.serialize("invalid"), "http://authServer");
   // Need to manually trigger storage event, since it doesn't fire in the current window
-  Ember.$(window).trigger(buildMockStorageEvent("invalid", "http://authServer"));
+  $(window).trigger(buildMockStorageEvent("invalid", "http://authServer"));
 
   setTimeout(function(){
     assert.ok(!promise.isFulfilled, 'promise is not fulfulled by invalid data');
@@ -147,7 +149,7 @@ test("open rejects when window closes", function(assert){
     return mockWindow;
   };
 
-  Ember.run(function(){
+  run(function(){
     popup.open('some-url', ['code']).then(function(){
       assert.ok(false, 'resolved the open promise');
     }, function(){
@@ -165,7 +167,7 @@ test("localStorage state is cleaned up when parent window closes", function(asse
     return mockWindow;
   };
 
-  Ember.run(function(){
+  run(function(){
     popup.open('some-url', ['code']).then(function(){
       assert.ok(false, 'resolved the open promise');
     }, function(){

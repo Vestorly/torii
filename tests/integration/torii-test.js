@@ -1,3 +1,5 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { run } from '@ember/runloop';
 var torii, app;
 
 import DummySuccessProvider from '../helpers/dummy-success-provider';
@@ -16,12 +18,12 @@ module('Integration | Torii', {
     torii = lookup(app, 'service:torii');
   },
   afterEach() {
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
 test("torii opens a dummy-success provider", function(assert){
-  Ember.run(function(){
+  run(function(){
     torii.open('dummy-success', {name: 'dummy'}).then(function(authentication){
       assert.ok(true, 'torii resolves an open promise');
       assert.equal(authentication.name, 'dummy', 'resolves with an authentication object');
@@ -32,7 +34,7 @@ test("torii opens a dummy-success provider", function(assert){
 });
 
 test("torii fails to open a dummy-failure provider", function(assert){
-  Ember.run(function(){
+  run(function(){
     torii.open('dummy-failure').then(function(){
       assert.ok(false, 'torii resolved an open promise');
     }, function(){
@@ -43,9 +45,9 @@ test("torii fails to open a dummy-failure provider", function(assert){
 
 test("torii fetches a dummy-success provider", function(assert){
   app.register('torii-provider:with-fetch', DummySuccessProvider.extend({
-    fetch: Ember.RSVP.Promise.resolve
+    fetch: EmberPromise.resolve
   }));
-  Ember.run(function(){
+  run(function(){
     torii.open('with-fetch', {name: 'dummy'}).then(function(){
       assert.ok(true, 'torii resolves a fetch promise');
     }, function(){
@@ -56,9 +58,9 @@ test("torii fetches a dummy-success provider", function(assert){
 
 test("torii fails to fetch a dummy-failure provider", function(assert){
   app.register('torii-provider:with-fetch', DummyFailureProvider.extend({
-    fetch: Ember.RSVP.Promise.reject
+    fetch: EmberPromise.reject
   }));
-  Ember.run(function(){
+  run(function(){
     torii.open('with-fetch').then(function(){
       assert.ok(false, 'torii resolve a fetch promise');
     }, function(){
@@ -69,9 +71,9 @@ test("torii fails to fetch a dummy-failure provider", function(assert){
 
 test("torii closes a dummy-success provider", function(assert){
   app.register('torii-provider:with-close', DummySuccessProvider.extend({
-    fetch: Ember.RSVP.Promise.resolve
+    fetch: EmberPromise.resolve
   }));
-  Ember.run(function(){
+  run(function(){
     torii.open('with-close', {name: 'dummy'}).then(function(){
       assert.ok(true, 'torii resolves a clos promise');
     }, function(){
@@ -82,9 +84,9 @@ test("torii closes a dummy-success provider", function(assert){
 
 test("torii fails to close a dummy-failure provider", function(assert){
   app.register('torii-provider:with-close', DummyFailureProvider.extend({
-    fetch: Ember.RSVP.Promise.reject
+    fetch: EmberPromise.reject
   }));
-  Ember.run(function(){
+  run(function(){
     torii.open('with-close').then(function(){
       assert.ok(false, 'torii resolves a close promise');
     }, function(){
@@ -124,7 +126,7 @@ test('raises when calling undefined #open', function(assert){
 test('fails silently when calling undefined #fetch', function(assert){
   var thrown = false, fetched;
   try {
-    Ember.run(function(){
+    run(function(){
       torii.fetch('dummy-failure').then(function(){
         fetched = true;
       });
@@ -139,7 +141,7 @@ test('fails silently when calling undefined #fetch', function(assert){
 test('fails silently when calling undefined #close', function(assert){
   var thrown = false, closed;
   try {
-    Ember.run(function(){
+    run(function(){
       torii.close('dummy-failure').then(function(){
         closed = true;
       });

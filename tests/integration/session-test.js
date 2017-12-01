@@ -1,3 +1,5 @@
+import { resolve, reject } from 'rsvp';
+import { run } from '@ember/runloop';
 var session, user, adapter, app;
 
 import SessionService from 'torii/services/torii-session';
@@ -21,7 +23,7 @@ module('Integration | Session (open)', {
     session = lookup(app, 'service:session');
   },
   afterEach() {
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
@@ -42,14 +44,14 @@ test("starting auth sets isOpening to true", function(assert){
   };
 
   app.register("torii-adapter:dummy-success", DummyAdapter);
-  Ember.run(function(){
+  run(function(){
     session.open('dummy-success');
   });
 });
 
 test("successful auth sets isAuthenticated to true", function(assert){
   app.register("torii-adapter:dummy-success", DummyAdapter);
-  Ember.run(function(){
+  run(function(){
     session.open('dummy-success').then(function(){
       assert.ok(!session.get('isOpening'), 'session is no longer opening');
       assert.ok(session.get('isAuthenticated'), 'session is authenticated');
@@ -58,7 +60,7 @@ test("successful auth sets isAuthenticated to true", function(assert){
 });
 
 test("failed auth sets isAuthenticated to false, sets error", function(assert){
-  Ember.run(function(){
+  run(function(){
     session.open('dummy-failure').then(function(){
       assert.ok(false, 'should not resolve promise');
     }, function(){
@@ -85,7 +87,7 @@ module('Integration | Session (close) ', {
     session.get('stateMachine').send('finishOpen', { currentUser: user});
   },
   afterEach() {
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
@@ -98,20 +100,20 @@ test("starting close sets isWorking to true", function(assert){
   adapter.close = function(){
     assert.ok(true, 'calls adapter.close');
     assert.ok(session.get('isWorking'), 'session.isWorking is true');
-    return Ember.RSVP.resolve();
+    return resolve();
   };
 
-  Ember.run(function(){
+  run(function(){
     session.close();
   });
 });
 
 test("finished close sets isWorking to false, isAuthenticated false", function(assert){
   adapter.close = function(){
-    return Ember.RSVP.resolve();
+    return resolve();
   };
 
-  Ember.run(function(){
+  run(function(){
     session.close().then(function(){
       assert.ok(!session.get('isWorking'), "isWorking is false");
       assert.ok(!session.get('isAuthenticated'), "isAuthenticated is false");
@@ -126,10 +128,10 @@ test("failed close sets isWorking to false, isAuthenticated true, error", functi
   var error = 'Oh my';
 
   adapter.close = function(){
-    return Ember.RSVP.reject(error);
+    return reject(error);
   };
 
-  Ember.run(function(){
+  run(function(){
     session.close().then(function(){
       assert.ok(false, "promise resolved");
     },function(error){

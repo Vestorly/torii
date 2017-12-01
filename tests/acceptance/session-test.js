@@ -1,9 +1,10 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { run } from '@ember/runloop';
 import DummyAdapter from '../helpers/dummy-adapter';
 import DummySuccessProvider from '../helpers/dummy-success-provider';
 import DummyFailureProvider from '../helpers/dummy-failure-provider';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import { test } from 'qunit';
-import Ember from 'ember';
 
 function signIn(session, sessionData={}){
   var sm = session.get('stateMachine');
@@ -24,7 +25,7 @@ moduleForAcceptance('Acceptance | Session', {
 });
 
 test("#open dummy-success session raises must-implement on application adapter", function(assert){
-  Ember.run(() => {
+  run(() => {
     this.session.open('dummy-success').then(() => {
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -36,7 +37,7 @@ test("#open dummy-success session raises must-implement on application adapter",
 
 test("#open dummy-success session fails on signed in state", function(assert){
   signIn(this.session);
-  Ember.run(() => {
+  run(() => {
     this.session.open('dummy-success').then(() => {
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -48,7 +49,7 @@ test("#open dummy-success session fails on signed in state", function(assert){
 
 test("#open dummy-success session successfully opens", function(assert){
   this.application.register("torii-adapter:dummy-success", DummyAdapter);
-  Ember.run(() => {
+  run(() => {
     this.session.open('dummy-success').then(() => {
       assert.ok(true, 'resolves promise');
       assert.ok(this.session.get('isAuthenticated'), 'authenticated');
@@ -60,7 +61,7 @@ test("#open dummy-success session successfully opens", function(assert){
 });
 
 test("#open dummy-failure session fails to open", function(assert){
-  Ember.run(() => {
+  run(() => {
     this.session.open('dummy-failure').then(function(){
       assert.ok(false, 'should not resolve promise');
     }, function(){
@@ -70,7 +71,7 @@ test("#open dummy-failure session fails to open", function(assert){
 });
 
 test("#fetch dummy-success session raises must-implement on application adapter", function(assert){
-  Ember.run(() => {
+  run(() => {
     this.session.fetch('dummy-success').then(function(){
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -83,7 +84,7 @@ test("#fetch dummy-success session raises must-implement on application adapter"
 test("#fetch dummy-success session fails on signed in state", function(assert){
   this.application.register("torii-adapter:dummy-success", DummyAdapter);
   signIn(this.session);
-  Ember.run(() => {
+  run(() => {
     this.session.fetch('dummy-success').then(function(){
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -95,7 +96,7 @@ test("#fetch dummy-success session fails on signed in state", function(assert){
 
 test("#fetch dummy-success session successfully opens", function(assert){
   this.application.register("torii-adapter:dummy-success", DummyAdapter);
-  Ember.run(() => {
+  run(() => {
     this.session.fetch('dummy-success').then(() => {
       assert.ok(true, 'resolves promise');
       assert.ok(this.session.get('isAuthenticated'), 'authenticated');
@@ -109,12 +110,12 @@ test("#fetch dummy-success session successfully opens", function(assert){
 test("#fetch session passes options to adapter", function(assert){
   var adapterFetchCalledWith = null;
   this.application.register("torii-adapter:dummy-success", DummyAdapter.extend({
-    fetch: function(options){
+    fetch(options) {
       adapterFetchCalledWith = options;
       return this._super(options);
     }
   }));
-  Ember.run(() => {
+  run(() => {
     var opts = {};
     this.session.fetch('dummy-success', opts).then(function(){
       assert.equal(adapterFetchCalledWith, opts, 'options should be passed through to adapter');
@@ -125,7 +126,7 @@ test("#fetch session passes options to adapter", function(assert){
 });
 
 test("#fetch dummy-failure session fails to open", function(assert){
-  Ember.run(() => {
+  run(() => {
     this.session.open('dummy-failure').then(function(){
       assert.ok(false, 'should not resolve promise');
     }, function(){
@@ -136,11 +137,11 @@ test("#fetch dummy-failure session fails to open", function(assert){
 
 test("#close dummy-success fails in an unauthenticated state", function(assert){
   this.adapter.reopen({
-    close: function(){
-      return Ember.RSVP.Promise.resolve();
+    close() {
+      return EmberPromise.resolve();
     }
   });
-  Ember.run(() => {
+  run(() => {
     this.session.close().then(function(){
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -153,11 +154,11 @@ test("#close dummy-success fails in an unauthenticated state", function(assert){
 test("#close dummy-success session closes", function(assert){
   signIn(this.session, {currentUser: {email: 'some@email.com'}});
   this.adapter.reopen({
-    close: function(){
-      return Ember.RSVP.Promise.resolve();
+    close() {
+      return EmberPromise.resolve();
     }
   });
-  Ember.run(() => {
+  run(() => {
     this.session.close('dummy-success').then(() => {
       assert.ok(true, 'resolved promise');
       assert.ok(!this.session.get('isAuthenticated'), 'authenticated');
@@ -170,7 +171,7 @@ test("#close dummy-success session closes", function(assert){
 
 test("#close dummy-success session raises must-implement on application adapter", function(assert){
   signIn(this.session);
-  Ember.run(() => {
+  run(() => {
     this.session.close('dummy-success').then(function(){
       assert.ok(false, 'resolved promise');
     }, function(error){
@@ -186,10 +187,10 @@ test("#close dummy-success session passes options to application adapter", funct
 
   this.adapter.close = function(options) {
     optionsCloseCalledWith = options;
-    return new Ember.RSVP.Promise(function (resolve) { resolve(); });
+    return new EmberPromise(function (resolve) { resolve(); });
   };
 
-  Ember.run(() => {
+  run(() => {
     var opts = {};
     this.session.close('dummy-success', opts).then(function(){
       assert.equal(optionsCloseCalledWith, opts, 'options should be passed through to adapter');
@@ -201,12 +202,12 @@ test("#close dummy-success session uses named adapter when present", function(as
   signIn(this.session, {currentUser: {email: 'some@email.com'}});
   var correctAdapterCalled = false;
   this.application.register("torii-adapter:dummy-success", DummyAdapter.extend({
-    close: function() {
+    close() {
       correctAdapterCalled = true;
       return this._super();
     }
   }));
-  Ember.run(() => {
+  run(() => {
     this.session.close('dummy-success').then(function(){
       assert.ok(correctAdapterCalled, 'named adapter should be used');
     }, function(err){

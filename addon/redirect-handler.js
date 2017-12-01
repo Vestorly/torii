@@ -6,22 +6,27 @@
  * and should postMessage this data to window.opener
  */
 
+import { Promise as EmberPromise } from 'rsvp';
+
+import EmberObject from '@ember/object';
+import EmberError from '@ember/error';
+
 import { CURRENT_REQUEST_KEY, WARNING_KEY } from "./mixins/ui-service-mixin";
 import configuration from 'torii/configuration';
 
-export class ToriiRedirectError extends Ember.Error {
+export class ToriiRedirectError extends EmberError {
   constructor() {
     super(...arguments);
     this.name = 'ToriiRedirectError';
   }
 }
 
-var RedirectHandler = Ember.Object.extend({
+var RedirectHandler = EmberObject.extend({
 
-  run: function(){
+  run() {
     var windowObject = this.windowObject;
 
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new EmberPromise(function(resolve, reject){
       var pendingRequestKey = windowObject.localStorage.getItem(CURRENT_REQUEST_KEY);
       windowObject.localStorage.removeItem(CURRENT_REQUEST_KEY);
       if (pendingRequestKey) {
@@ -45,7 +50,7 @@ var RedirectHandler = Ember.Object.extend({
 
 RedirectHandler.reopenClass({
   // untested
-  handle: function(windowObject){
+  handle(windowObject) {
     var handler = RedirectHandler.create({windowObject: windowObject});
     return handler.run();
   }

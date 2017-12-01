@@ -2,6 +2,7 @@ import { getConfiguration, configure } from 'torii/configuration';
 import BaseProvider from 'torii/providers/oauth2-code';
 import QUnit from 'qunit';
 import sinon from 'sinon';
+import { run } from '@ember/runloop';
 
 let { module, test } = QUnit;
 let provider;
@@ -36,7 +37,7 @@ module('Unit | Provider | MockOauth2Provider (oauth2-code subclass)', {
     tokenProvider = TokenProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import RedirectHandler from 'torii/redirect-handler';
 import { CURRENT_REQUEST_KEY } from 'torii/mixins/ui-service-mixin';
 import QUnit from 'qunit';
@@ -8,16 +9,16 @@ function buildMockWindow(windowName, url){
   return {
     name: windowName,
     location: {
-      toString: function(){
+      toString() {
         return url;
       }
     },
     localStorage: {
-      setItem: function() {},
-      getItem: function() {},
-      removeItem: function() {}
+      setItem() {},
+      getItem() {},
+      removeItem() {}
     },
-    close: function() {}
+    close() {}
   };
 }
 
@@ -46,7 +47,7 @@ test("handles a tori-popup window with a current request key in localStorage and
   };
   var handler = RedirectHandler.create({windowObject: mockWindow});
 
-  Ember.run(function(){
+  run(function(){
     handler.run().then(function(){}, function(){
       assert.ok(false, "run handler rejected a basic url");
     });
@@ -60,7 +61,7 @@ test('rejects the promise if there is no request key', function(assert){
   var mockWindow = buildMockWindow("", "http://authServer?code=1234512345fw");
   var handler = RedirectHandler.create({windowObject: mockWindow});
 
-  Ember.run(function(){
+  run(function(){
     handler.run().then(function(){
       assert.ok(false, "run handler succeeded on a url");
     }, function(){
@@ -78,7 +79,7 @@ test('does not set local storage when not a torii popup', function(assert){
 
   var handler = RedirectHandler.create({windowObject: mockWindow});
 
-  Ember.run(function(){
+  run(function(){
     handler.run().then(function(){
       assert.ok(false, "run handler succeeded on a popup");
     }, function(){
@@ -103,7 +104,7 @@ test('closes the window when a torii popup with request', function(assert){
     assert.ok(true, "Window was closed");
   };
 
-  Ember.run(function(){
+  run(function(){
     handler.run();
   });
 });
@@ -119,7 +120,7 @@ test('does not close the window when a not torii popup', function(assert){
     assert.ok(false, "Window was closed unexpectedly");
   };
 
-  Ember.run(function(){
+  run(function(){
     handler.run().then(function(){}, function(){
       assert.ok(true, "error handler is called");
     });

@@ -1,3 +1,5 @@
+import { run } from '@ember/runloop';
+import { resolve } from 'rsvp';
 import OAuth1Provider from 'torii/providers/oauth1';
 import { configure } from 'torii/configuration';
 import startApp from '../../helpers/start-app';
@@ -9,10 +11,10 @@ const { module, test } = QUnit;
 var torii, app;
 
 var opened, openedUrl, mockPopup = {
-  open: function(url){
+  open(url) {
     openedUrl = url;
     opened = true;
-    return Ember.RSVP.resolve({});
+    return resolve({});
   }
 };
 
@@ -38,12 +40,12 @@ module('Integration | Provider | Oauth1', {
   },
   afterEach() {
     opened = false;
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
 test("Opens a popup to the requestTokenUri", function(assert){
-  Ember.run(function(){
+  run(function(){
     torii.open(providerName).finally(function(){
       assert.equal(openedUrl, requestTokenUri, 'opens with requestTokenUri');
       assert.ok(opened, "Popup service is opened");

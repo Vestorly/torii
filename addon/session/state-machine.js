@@ -41,11 +41,11 @@ export default function(session){
         isWorking: true,
         isOpening: true,
         // Actions
-        finishOpen: function(data){
+        finishOpen(data) {
           copyProperties(data, this.states['authenticated']);
           this.transitionTo('authenticated');
         },
-        failOpen: function(errorMessage){
+        failOpen(errorMessage) {
           this.states['unauthenticated'].errorMessage = errorMessage;
           this.transitionTo('unauthenticated');
         }
@@ -54,11 +54,11 @@ export default function(session){
         isWorking: true,
         isFetching: true,
         // Actions
-        finishFetch: function(data){
+        finishFetch(data) {
           copyProperties(data, this.states['authenticated']);
           this.transitionTo('authenticated');
         },
-        failFetch: function(errorMessage){
+        failFetch(errorMessage) {
           this.states['unauthenticated'].errorMessage = errorMessage;
           this.transitionTo('unauthenticated');
         }
@@ -68,10 +68,10 @@ export default function(session){
         isClosing: true,
         isAuthenticated: true,
         // Actions
-        finishClose: function(){
+        finishClose() {
           this.transitionTo('unauthenticated');
         },
-        failClose: function(errorMessage){
+        failClose(errorMessage) {
           this.states['unauthenticated'].errorMessage = errorMessage;
           this.transitionTo('unauthenticated');
         }

@@ -1,3 +1,4 @@
+import { run } from '@ember/runloop';
 import { getConfiguration, configure } from 'torii/configuration';
 import AzureAdProvider from 'torii/providers/azure-ad-oauth2';
 import QUnit from 'qunit';
@@ -18,7 +19,7 @@ module('Unit | Provider | AzureAdOAuth2Provider', {
     provider = AzureAdProvider.create();
   },
   afterEach() {
-    Ember.run(provider, 'destroy');
+    run(provider, 'destroy');
     configure(originalConfiguration);
   }
 });

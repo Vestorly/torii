@@ -1,3 +1,5 @@
+import { get } from '@ember/object';
+import { run } from '@ember/runloop';
 import DummyAdapter from '../../helpers/dummy-adapter';
 import QUnit from 'qunit';
 let { module, test } = QUnit;
@@ -9,15 +11,15 @@ module('Unit | Adapter | DummyAdapter', {
     adapter = DummyAdapter.create();
   },
   afterEach() {
-    Ember.run(adapter, 'destroy');
+    run(adapter, 'destroy');
   }
 });
 
 test("open resolves with a user", function(assert){
-  Ember.run(function(){
+  run(function(){
     adapter.open().then(function(data){
       assert.ok(true, 'resolved');
-      assert.ok(Ember.get(data,'currentUser.email'), 'dummy user has email');
+      assert.ok(get(data,'currentUser.email'), 'dummy user has email');
     });
   });
 });

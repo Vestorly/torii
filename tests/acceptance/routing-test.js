@@ -1,9 +1,10 @@
+import Route from '@ember/routing/route';
+import { run } from '@ember/runloop';
 import startApp from '../helpers/start-app';
 import rawConfig from '../../config/environment';
 import lookup from '../helpers/lookup';
 import Router from 'dummy/router';
 import QUnit from 'qunit';
-import Ember from 'ember';
 
 let { module, test } = QUnit;
 
@@ -18,7 +19,7 @@ module('Acceptance | Routing', {
 
   afterEach() {
     configuration.sessionServiceName = originalSessionServiceName;
-    Ember.run(app, 'destroy');
+    run(app, 'destroy');
   }
 });
 
@@ -30,16 +31,16 @@ test('ApplicationRoute#checkLogin is not called when no authenticated routes are
   var checkLoginCalled = false;
 
   bootApp({
-    map: function _map() {
+    map() {
       routesConfigured = true;
     },
-    setup: function() {
-      app.register('route:application', Ember.Route.extend());
+    setup() {
+      app.register('route:application', Route.extend());
     }
   });
   var applicationRoute = lookup(app, 'route:application');
   applicationRoute.reopen({
-    checkLogin: function() {
+    checkLogin() {
       checkLoginCalled = true;
     }
   });
@@ -56,18 +57,18 @@ test('ApplicationRoute#checkLogin is called when an authenticated route is prese
   var checkLoginCalled = false;
 
   bootApp({
-    map: function() {
+    map() {
       routesConfigured = true;
       this.authenticatedRoute('account');
     },
-    setup: function() {
-      app.register('route:application', Ember.Route.extend());
-      app.register('route:account', Ember.Route.extend());
+    setup() {
+      app.register('route:application', Route.extend());
+      app.register('route:account', Route.extend());
     }
   });
   var applicationRoute = lookup(app, 'route:application');
   applicationRoute.reopen({
-    checkLogin: function() {
+    checkLogin() {
       checkLoginCalled = true;
     }
   });
@@ -85,18 +86,18 @@ test('ApplicationRoute#checkLogin returns the correct name of the session variab
     sessionFound = false;
 
   bootApp({
-    map: function() {
+    map() {
       routesConfigured = true;
       this.authenticatedRoute('account');
     },
-    setup: function() {
-      app.register('route:application', Ember.Route.extend());
-      app.register('route:account', Ember.Route.extend());
+    setup() {
+      app.register('route:application', Route.extend());
+      app.register('route:account', Route.extend());
     }
   });
   var applicationRoute = lookup(app, 'route:application');
   applicationRoute.reopen({
-    checkLogin: function() {
+    checkLogin() {
       sessionFound = this.get('testName');
     }
   });
@@ -113,14 +114,14 @@ test('authenticated routes get authenticate method', function(assert){
   configuration.sessionServiceName = 'session';
 
   bootApp({
-    map: function() {
+    map() {
       this.route('home');
       this.authenticatedRoute('account');
     },
-    setup: function() {
-      app.register('route:application', Ember.Route.extend());
-      app.register('route:account', Ember.Route.extend());
-      app.register('route:home', Ember.Route.extend());
+    setup() {
+      app.register('route:application', Route.extend());
+      app.register('route:account', Route.extend());
+      app.register('route:home', Route.extend());
     }
   });
   var authenticatedRoute = lookup(app, 'route:account');
@@ -135,7 +136,7 @@ test('lazily created authenticated routes get authenticate method', function(ass
   configuration.sessionServiceName = 'session';
 
   bootApp({
-    map: function() {
+    map() {
       this.route('home');
       this.authenticatedRoute('account');
     }
@@ -155,20 +156,20 @@ test('session.attemptedTransition is set before redirecting away from authentica
   var attemptedTransition = null;
 
   bootApp({
-    map: function() {
+    map() {
       this.route('public');
       this.authenticatedRoute('secret');
     },
-    setup: function() {
-      app.register('route:application', Ember.Route.extend());
-      app.register('route:secret', Ember.Route.extend());
+    setup() {
+      app.register('route:application', Route.extend());
+      app.register('route:secret', Route.extend());
     }
   });
 
   var applicationRoute = lookup(app, 'route:application');
   applicationRoute.reopen({
     actions: {
-      accessDenied: function() {
+      accessDenied() {
         attemptedTransition = this.get('session').attemptedTransition;
       }
     }
@@ -195,7 +196,7 @@ function bootApp(attrs) {
 
   setup();
 
-  Ember.run(function(){
+  run(function(){
     app.advanceReadiness();
   });
 

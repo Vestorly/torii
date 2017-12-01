@@ -61,11 +61,11 @@ StateMachine.transitionTo = function(state){
 
 StateMachine.prototype = {
   states: {},
-  toString: function(){
+  toString() {
     return "<StateMachine currentState:'" + this.currentStateName +"' >";
   },
 
-  transitionTo: function(nextStateName){
+  transitionTo(nextStateName) {
     if (nextStateName.charAt(0) === '.') {
       var splits = this.currentStateName.split('.').slice(0,-1);
 
@@ -91,15 +91,15 @@ StateMachine.prototype = {
     this.didTransition(stateName, nextStateName);
   },
 
-  beforeTransition: function(options, fn) {
+  beforeTransition(options, fn) {
     this._transition('willTransition', options, fn);
   },
 
-  afterTransition: function(options, fn) {
+  afterTransition(options, fn) {
     this._transition('didTransition', options, fn);
   },
 
-  _transition: function(event, filter, fn) {
+  _transition(event, filter, fn) {
     var from = filter.from || SPLAT,
       to = filter.to || SPLAT,
       matchingTo, matchingFrom,
@@ -155,15 +155,15 @@ StateMachine.prototype = {
     });
   },
 
-  willTransition: function(from, to) {
+  willTransition(from, to) {
     this._notify('willTransition', from, to);
   },
 
-  didTransition: function(from, to) {
+  didTransition(from, to) {
     this._notify('didTransition', from, to);
   },
 
-  _notify: function(name, from, to) {
+  _notify(name, from, to) {
     var subscriptions = (this._subscriptions[name] || []);
 
     for( var i = 0, length = subscriptions.length; i < length; i++){
@@ -171,12 +171,12 @@ StateMachine.prototype = {
     }
   },
 
-  on: function(event, fn) {
+  on(event, fn) {
     this._subscriptions[event] = this._subscriptions[event] || [];
     this._subscriptions[event].push(fn);
   },
 
-  off: function(event, fn) {
+  off(event, fn) {
     var idx = this._subscriptions[event].indexOf(fn);
 
     if (fn){
@@ -188,7 +188,7 @@ StateMachine.prototype = {
     }
   },
 
-  send: function(eventName) {
+  send(eventName) {
     var event = this.state[eventName];
     var args = a_slice.call(arguments, 1);
 
@@ -199,7 +199,7 @@ StateMachine.prototype = {
     }
   },
 
-  trySend: function(eventName) {
+  trySend(eventName) {
     var event = this.state[eventName];
     var args = a_slice.call(arguments,1);
 
@@ -208,11 +208,11 @@ StateMachine.prototype = {
     }
   },
 
-  event: function(eventName, callback){
+  event(eventName, callback) {
     var states = this.states;
 
     var eventApi = {
-      transition: function() {
+      transition() {
         var first = arguments[0],
         second = arguments[1],
         events = normalizeEvents(eventName, first, second);
@@ -227,7 +227,7 @@ StateMachine.prototype = {
     callback.call(eventApi);
   },
 
-  unhandledEvent: function(event){
+  unhandledEvent(event) {
     var message = "Unknown Event: `" + event + "` for: " + this.toString();
 
     throw new Error(message);
