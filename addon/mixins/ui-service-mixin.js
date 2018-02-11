@@ -4,20 +4,13 @@ import Mixin from '@ember/object/mixin';
 import { on } from '@ember/object/evented';
 import UUIDGenerator from 'torii/lib/uuid-generator';
 import PopupIdSerializer from 'torii/lib/popup-id-serializer';
-import ParseQueryString from 'torii/lib/parse-query-string';
+import { parseQueryString } from 'torii/lib/query-string';
 import assert from 'torii/lib/assert';
 export const CURRENT_REQUEST_KEY = '__torii_request';
 export const WARNING_KEY = '__torii_redirect_warning';
 import { getConfiguration } from 'torii/configuration';
 
-function parseMessage(url, keys){
-  var parser = ParseQueryString.create({url: url, keys: keys});
-  var data = parser.parse();
-  return data;
-}
-
 var ServicesMixin = Mixin.create({
-
   init(){
     this._super(...arguments);
     this.remoteIdGenerator = this.remoteIdGenerator || UUIDGenerator;
@@ -47,8 +40,8 @@ var ServicesMixin = Mixin.create({
       var remoteId = service.remoteIdGenerator.generate();
       storageToriiEventHandler = function(storageEvent) {
         var remoteIdFromEvent = PopupIdSerializer.deserialize(storageEvent.key);
-        if (remoteId === remoteIdFromEvent) {
-          var data = parseMessage(storageEvent.newValue, keys);
+        if (remoteId = remoteIdFromEvent) {
+          var data = parseQueryString(storageEvent.newValue, keys);
           localStorage.removeItem(storageEvent.key);
           run(function () {
             resolve(data);
