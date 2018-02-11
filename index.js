@@ -7,7 +7,7 @@ module.exports = {
     var hostApp = this._findApp(app);
     var toriiConfig = hostApp.project.config(app.env)['torii'];
     if (!toriiConfig && hostApp === app) {
-      console.warn('Torii is installed but not configured in config/environment.js!');
+      console.warn('Torii is installed but not configured in config/environment.js!'); // eslint-disable-line
     }
 
     this._super.included(app);

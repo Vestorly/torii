@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 8.2.0
+    version: 8.9.4
   pre:
     - mkdir ~/.cache/yarn
 dependencies:

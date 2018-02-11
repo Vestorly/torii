@@ -724,12 +724,7 @@ interface is built entirely with Ember.js and modern web technologies.
 [hello@vestorly.com](hello@vestorly.com)*
 
 Torii aims to provide a flexible set of primitives for creating your
-application' own authentication solution. There are still a few things
-we could use help with:
+application' own authentication solution. There are always a few things
+we could use help with.
 
-* A non-AMD build of the code
-* More testing of sessions
-* More documentation
-* Publish your own provider or adapter implementation!
-
-We welcome your contributions.
+We welcome your contributions!

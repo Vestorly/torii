@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { later, run, cancel } from '@ember/runloop';
 import { Promise as EmberPromise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
@@ -29,8 +28,9 @@ var ServicesMixin = Mixin.create({
   // Services that use this mixin should implement openRemote
   //
   open(url, keys, options) {
-    var service   = this,
-        lastRemote = this.remote;
+    let service = this;
+    let lastRemote = this.remote;
+    let storageToriiEventHandler;
 
     return new EmberPromise(function(resolve, reject){
       if (lastRemote) {
@@ -38,7 +38,16 @@ var ServicesMixin = Mixin.create({
       }
 
       var remoteId = service.remoteIdGenerator.generate();
-
+      storageToriiEventHandler = function(storageEvent) {
+        var remoteIdFromEvent = PopupIdSerializer.deserialize(storageEvent.key);
+        if (remoteId === remoteIdFromEvent) {
+          var data = parseQueryString(storageEvent.newValue, keys);
+          localStorage.removeItem(storageEvent.key);
+          run(function () {
+            resolve(data);
+          });
+        }
+      }
       var pendingRequestKey = PopupIdSerializer.serialize(remoteId);
       localStorage.setItem(CURRENT_REQUEST_KEY, pendingRequestKey);
       localStorage.removeItem(WARNING_KEY);
@@ -85,24 +94,11 @@ var ServicesMixin = Mixin.create({
           reject(new Error("remote was closed, authorization was denied, or an authentication message otherwise not received before the window closed."));
         }, 100);
       });
-
-      $(window).on('storage.torii', function(event){
-        var storageEvent = event.originalEvent;
-
-        var remoteIdFromEvent = PopupIdSerializer.deserialize(storageEvent.key);
-        if (remoteId === remoteIdFromEvent){
-          var data = parseQueryString(storageEvent.newValue, keys);
-          localStorage.removeItem(storageEvent.key);
-          run(function() {
-            resolve(data);
-          });
-        }
-      });
+      window.addEventListener('storage', storageToriiEventHandler);
     }).finally(function(){
       // didClose will reject this same promise, but it has already resolved.
       service.close();
-
-      $(window).off('storage.torii');
+      window.removeEventListener('storage', storageToriiEventHandler);
     });
   },
 
