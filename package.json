@@ -64,6 +64,7 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
+    "ember-maybe-import-regenerator": "^0.1.6",
     "ember-native-dom-event-dispatcher": "^0.6.4",
     "ember-resolver": "^4.5.0",
     "ember-sinon": "^1.0.1",

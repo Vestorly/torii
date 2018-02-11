@@ -40,7 +40,7 @@ var ServicesMixin = Mixin.create({
       var remoteId = service.remoteIdGenerator.generate();
       storageToriiEventHandler = function(storageEvent) {
         var remoteIdFromEvent = PopupIdSerializer.deserialize(storageEvent.key);
-        if (remoteId = remoteIdFromEvent) {
+        if (remoteId === remoteIdFromEvent) {
           var data = parseQueryString(storageEvent.newValue, keys);
           localStorage.removeItem(storageEvent.key);
           run(function () {
