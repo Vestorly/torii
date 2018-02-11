@@ -1,5 +1,6 @@
-import $ from 'jquery';
 import { Promise as EmberPromise } from 'rsvp';
+import { run } from '@ember/runloop';
+import { assign } from '@ember/polyfills';
 import OAuth2Code from 'torii/providers/oauth2-code';
 import { configurable } from 'torii/configuration';
 
@@ -77,58 +78,42 @@ var GoogleOauth2BearerV2 = OAuth2Code.extend({
 
       // Token validation. For details, see
       // https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken
-      return new EmberPromise( function (resolve, reject) {
+      return new EmberPromise(function(resolve, reject) {
         // Token validation request
-        $.ajax(
+        let xhr = new XMLHttpRequest();
+        xhr.overrideMimeType('application/json');
+        xhr.onload = function() {
+          var jsonResponse = JSON.parse(xhr.responseText);
+          /* the response is a JSON that looks like:
           {
-            type: 'GET',
-            url: tokenValidationUrl,
-            data: {
-              'access_token': authData['access_token']
-            },
-            success(jsonResponse) {
-              /* the response is a JSON that looks like:
-              {
-                "audience":"8819981768.apps.googleusercontent.com",
-                "user_id":"123456789",
-                "scope":"profile email",
-                "expires_in":436
-              }
-              */
-              // the token is valid if the 'audience' is the same as the
-              // 'client_id' (apiKey) provided to initiate authentication
-              if (jsonResponse.audience === clientId) {
-                // authentication succeeded. Add name and redirectUri to the
-                // authentication data and resolve
-                resolve(Object.assign(authData,
-                  {
-                    provider: name,
-                    redirectUri: redirectUri
-                  }
-                ));
-              } else if (jsonResponse.audience === undefined) {
-                // authentication failed because the response from the server
-                // is not as expected (no 'audience' field)
-                reject(new Error("Unexpected response from token validation " +
-                  "server. The 'audience' field may be missing."));
-              } else {
-                // authentication failed because the token is invalid or has
-                // been tempered with
-                reject(new Error("Access token is invalid or has been " +
-                  "tempered with. You may be subject to a 'confused deputy' " +
-                  "attack."));
-              }
-            },
-            error(jqXHR, textStatus) {
-              // authentication failed because the validation request failed
-              reject(new Error("Token validation request failed with status '" +
-                textStatus + "' (server '" + tokenValidationUrl + "' '" +
-                jqXHR.responseText + "')."));
-            }
+            "audience":"8819981768.apps.googleusercontent.com",
+            "user_id":"123456789",
+            "scope":"profile email",
+            "expires_in":436
           }
-        );
-      }).then( function (authenticationData) {
-        return authenticationData;
+          */
+          // the token is valid if the 'audience' is the same as the
+          // 'client_id' (apiKey) provided to initiate authentication
+          if (jsonResponse.audience === clientId) {
+            // authentication succeeded. Add name and redirectUri to the
+            // authentication data and resolve
+            run(() => resolve(assign(authData, { provider: name, redirectUri: redirectUri })));
+          } else if (jsonResponse.audience === undefined) {
+            // authentication failed because the response from the server
+            // is not as expected (no 'audience' field)
+            run(() => reject(new Error("Unexpected response from token validation server. The 'audience' field may be missing.")));
+          } else {
+            // authentication failed because the token is invalid or has
+            // been tempered with
+            run(() => reject(new Error("Access token is invalid or has been tempered with. You may be subject to a 'confused deputy' attack.")));
+          }
+        };
+        xhr.onerror = function() {
+          // authentication failed because the validation request failed
+          run(() => reject(new Error(`Token validation request failed with status '${xhr.statusText}' (server '${tokenValidationUrl}' '${xhr.responseText}').`)));
+        };
+        xhr.open('GET', `${tokenValidationUrl}?access_token=${encodeURIComponent(authData['access_token'])}`);
+        xhr.send();
       });
     });
   },

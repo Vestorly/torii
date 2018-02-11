@@ -79,6 +79,7 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {}
     };
+    ENV.APP.autoboot = false;
   }
 
   if (environment === 'production') {

@@ -1,6 +1,6 @@
 {
   "name": "torii",
-  "version": "0.9.6",
+  "version": "0.10.1",
   "description": "A set of clean abstractions for authentication in Ember.js",
   "keywords": [
     "authentication",
@@ -41,31 +41,35 @@
     "url": "https://github.com/vestorly/torii/issues"
   },
   "scripts": {
+    "build": "ember build",
+    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "start": "ember serve",
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.8.2"
+    "ember-cli-babel": "^6.11.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
-    "ember-cli": "~2.16.2",
-    "ember-cli-dependency-checker": "^2.0.0",
-    "ember-cli-eslint": "^4.2.0",
+    "ember-cli": "~2.18.1",
+    "ember-cli-dependency-checker": "^2.1.0",
+    "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-qunit": "^4.0.1",
-    "ember-cli-shims": "^1.1.0",
+    "ember-cli-qunit": "^4.1.1",
+    "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
-    "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-native-dom-event-dispatcher": "^0.6.4",
     "ember-resolver": "^4.5.0",
-    "ember-sinon": "^1.0.1",
-    "ember-source": "~2.16.0",
+    "ember-source": "~2.18.0",
+    "ember-source-channel-url": "^1.0.1",
     "eslint-plugin-ember": "^5.0.1",
+    "eslint-plugin-node": "^5.2.1",
     "loader.js": "^4.2.3"
   },
   "engines": {

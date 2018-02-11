@@ -1,12 +1,16 @@
-/* eslint-env node */
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
-  let app = new EmberAddon(defaults, {
-    // Add options here
-  });
+  let project = defaults.project;
+  let options = {};
+
+  if (project.findAddonByName('ember-native-dom-event-dispatcher')) {
+    options.vendorFiles = { 'jquery.js': null };
+  }
+
+  let app = new EmberAddon(defaults, options);
 
   /*
     This build file specifies the options for the dummy test app of this

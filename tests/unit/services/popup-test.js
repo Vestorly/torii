@@ -1,5 +1,4 @@
 import { run } from '@ember/runloop';
-import $ from 'jquery';
 import Popup from 'torii/services/popup';
 import PopupIdSerializer from 'torii/lib/popup-id-serializer';
 import { CURRENT_REQUEST_KEY } from "torii/mixins/ui-service-mixin";
@@ -28,11 +27,9 @@ var buildPopupIdGenerator = function(popupId){
 };
 
 var buildMockStorageEvent = function(popupId, redirectUrl){
-  return $.Event('storage', {
-    originalEvent: {
-      key: PopupIdSerializer.serialize(popupId),
-      newValue: redirectUrl
-    }
+  return new StorageEvent('storage', {
+    key: PopupIdSerializer.serialize(popupId),
+    newValue: redirectUrl
   });
 };
 
@@ -89,7 +86,7 @@ test("open resolves based on popup window", function(assert){
 
   localStorage.setItem(PopupIdSerializer.serialize(popupId), redirectUrl);
   // Need to manually trigger storage event, since it doesn't fire in the current window
-  $(window).trigger(buildMockStorageEvent(popupId, redirectUrl));
+  window.dispatchEvent(buildMockStorageEvent(popupId, redirectUrl));
 });
 
 test("open rejects when window does not open", function(assert){
@@ -129,7 +126,7 @@ test("open does not resolve when receiving a storage event for the wrong popup i
 
   localStorage.setItem(PopupIdSerializer.serialize("invalid"), "http://authServer");
   // Need to manually trigger storage event, since it doesn't fire in the current window
-  $(window).trigger(buildMockStorageEvent("invalid", "http://authServer"));
+  window.dispatchEvent(buildMockStorageEvent("invalid", "http://authServer"));
 
   setTimeout(function(){
     assert.ok(!promise.isFulfilled, 'promise is not fulfulled by invalid data');

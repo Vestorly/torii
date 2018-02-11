@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
 import UiServiceMixin from 'torii/mixins/ui-service-mixin';
@@ -6,9 +5,11 @@ import UiServiceMixin from 'torii/mixins/ui-service-mixin';
 var Iframe = EmberObject.extend(Evented, UiServiceMixin, {
 
   openRemote(url) {
-    this.remote = $('<iframe src="'+url+'" id="torii-iframe"></iframe>');
+    this.remote = document.createElement('iframe');
+    this.remote.src = url;
+    this.remote.id = 'torii-iframe';
     var iframeParent = '.torii-iframe-placeholder';
-    $(iframeParent).append(this.remote);
+    document.querySelector(iframeParent).appendChild(this.remote);
   },
 
   closeRemote() {
@@ -16,7 +17,7 @@ var Iframe = EmberObject.extend(Evented, UiServiceMixin, {
   },
 
   pollRemote() {
-    if ($('#torii-iframe').length === 0) {
+    if (document.querySelector('#torii-iframe') === null) {
       this.trigger('didClose');
     }
   }
