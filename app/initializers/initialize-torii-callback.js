@@ -12,7 +12,7 @@ export default {
       return;
     }
     application.deferReadiness();
-    RedirectHandler.handle(window).catch(function(){
+    RedirectHandler.handle(window).finally(function(){
       application.advanceReadiness();
     });
   }

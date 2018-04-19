@@ -40,6 +40,7 @@ var RedirectHandler = EmberObject.extend({
           // service, this next line will still be called. It will just fail silently.
           windowObject.close();
         }
+        resolve();
       } else {
         reject(new ToriiRedirectError('Not a torii popup'));
       }
