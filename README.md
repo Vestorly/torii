@@ -666,6 +666,7 @@ There are a number of ember-cli addons that allow you to use Torii with other pr
   * [torii-azure-ad2-provider](https://github.com/erikap/torii-azure-ad2-provider) via @erikap
   * [torii-provider-arcgis](https://github.com/dbouwman/torii-provider-arcgis) via @dbouwman
   * [torii-globe](https://github.com/jedld/torii-globe) via @jedld
+  * [torii-clever](https://github.com/sutori/torii-clever) via @YoranBrondsema
 
 ## Running the tests locally
 
