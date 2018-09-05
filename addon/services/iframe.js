@@ -13,7 +13,13 @@ var Iframe = EmberObject.extend(Evented, UiServiceMixin, {
   },
 
   closeRemote() {
-    this.remote.remove();
+    var iframeParent = document.querySelector('.torii-iframe-placeholder');
+
+    if (this.remote.remove) {
+      this.remote.remove();
+    } else if (iframeParent) {
+      iframeParent.removeChild(this.remote);
+    }
   },
 
   pollRemote() {
