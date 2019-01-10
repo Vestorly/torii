@@ -1,6 +1,6 @@
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import UiServiceMixin from 'torii/mixins/ui-service-mixin';
 
 function stringifyOptions(options){
@@ -29,7 +29,7 @@ function stringifyOptions(options){
 function prepareOptions(options){
   var width = options.width || 500,
       height = options.height || 500;
-  return merge({
+  return assign({
     left: ((screen.width / 2) - (width / 2)),
     top: ((screen.height / 2) - (height / 2)),
     width: width,

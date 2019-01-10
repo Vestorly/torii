@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 import buildFBMock from '../../helpers/build-fb-mock';
 import { configure } from 'torii/configuration';
@@ -53,7 +53,7 @@ test("Returns the scopes granted when configured", function(assert){
   });
   configure({
     providers: {
-      'facebook-connect': merge(providerConfiguration, {returnScopes: true})
+      'facebook-connect': assign(providerConfiguration, {returnScopes: true})
     }
   });
   run(function(){
