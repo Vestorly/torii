@@ -24,8 +24,11 @@ var GoogleOauth2 = Oauth2.extend({
 
   approvalPrompt: configurable('approvalPrompt', 'auto'),
 
-  redirectUri: configurable('redirectUri',
-                            'http://localhost:8000/oauth2callback'),
+  redirectUri: configurable('redirectUri', function(){
+    // A hack that allows redirectUri to be configurable
+    // but default to the superclass
+    return this._super();
+  }),
 
   hd: configurable('hd', '')
 });
