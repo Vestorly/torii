@@ -9,7 +9,7 @@ import { configurable } from 'torii/configuration';
  */
 var LinkedInOauth2 = Oauth2.extend({
   name:       'linked-in-oauth2',
-  baseUrl:    'https://www.linkedin.com/uas/oauth2/authorization',
+  baseUrl:    'https://www.linkedin.com/oauth/v2/authorization',
 
   responseParams: ['code', 'state'],
 
