@@ -38,6 +38,14 @@ export default Mixin.create({
     }
   },
   accessDenied(transition) {
-    transition.send('accessDenied', transition);
+    if (transition.promise) {
+      transition.promise.then(accessDenied);
+    } else {
+      accessDenied(transition);
+    }
   }
 });
+
+function accessDenied(transition) {
+  transition.send('accessDenied', transition);
+}

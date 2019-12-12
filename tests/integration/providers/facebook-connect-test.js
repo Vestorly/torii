@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { merge, assign as emberAssign } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 import buildFBMock from '../../helpers/build-fb-mock';
 import { configure } from 'torii/configuration';
@@ -7,6 +7,7 @@ import lookup from '../../helpers/lookup';
 import QUnit from 'qunit';
 import { overrideLoadScript, resetLoadScript } from 'torii/providers/-private/utils';
 const { module, test } = QUnit;
+const assign = Object.assign || emberAssign || merge;
 
 var originalFB = window.FB;
 let providerConfiguration;
@@ -53,7 +54,7 @@ test("Returns the scopes granted when configured", function(assert){
   });
   configure({
     providers: {
-      'facebook-connect': merge(providerConfiguration, {returnScopes: true})
+      'facebook-connect': assign(providerConfiguration, {returnScopes: true})
     }
   });
   run(function(){

@@ -75,16 +75,9 @@ var Oauth2 = Provider.extend({
 
   state:        configurable('state', function () { return this.get('randomState'); }),
 
-  _randomState: null,
+  _randomState: Object.freeze(randomUrlSafe(16)),
   randomState: computed('_randomState', function() {
-    var state = this.get('_randomState');
-
-    if (!state) {
-      state = randomUrlSafe(16);
-      this.set('_randomState', state);
-    }
-
-    return state;
+    return this.get('_randomState');
   }),
 
   /**

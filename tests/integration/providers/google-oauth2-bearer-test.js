@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { merge, assign as emberAssign } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 import { resolve } from 'rsvp';
 var torii, app;
@@ -9,6 +9,7 @@ import lookup from '../../helpers/lookup';
 import QUnit from 'qunit';
 
 const { module, test } = QUnit;
+const assign = Object.assign || emberAssign || merge;
 
 var opened, mockPopup, providerConfig;
 
@@ -51,7 +52,7 @@ test("Opens a popup to Google with request_visible_actions", function(assert){
   assert.expect(1);
   configure({
     providers: {
-      'google-oauth2-bearer': merge(providerConfig, {
+      'google-oauth2-bearer': assign(providerConfig, {
         requestVisibleActions: "http://some-url.com"
       })
     }
