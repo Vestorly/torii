@@ -1,7 +1,7 @@
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import Provider from 'torii/providers/base';
 import { configurable } from 'torii/configuration';
-import QueryString from 'torii/lib/query-string';
+import { buildQueryString } from 'torii/lib/query-string';
 import requiredProperty from 'torii/lib/required-property';
 import randomUrlSafe from 'torii/lib/random-url-safe';
 
@@ -108,23 +108,24 @@ var Oauth2 = Provider.extend({
     return `${currentUrl()}torii/redirect.html`;
   }),
 
-  buildQueryString() {
-    var requiredParams = this.get('requiredUrlParams'),
-        optionalParams = this.get('optionalUrlParams');
+  buildQueryString(overriddenParams) {
+    const providerGetter = (keyName) => {
+      return get(this, keyName);
+    };
 
-    var qs = QueryString.create({
-      provider: this,
-      requiredParams: requiredParams,
-      optionalParams: optionalParams
-    });
-    return qs.toString();
+    return buildQueryString(
+      providerGetter,
+      this.get('requiredUrlParams'),
+      this.get('optionalUrlParams'),
+      overriddenParams
+    );
   },
 
-  buildUrl() {
+  buildUrl(overriddenParams) {
     var base = this.get('baseUrl'),
-        qs   = this.buildQueryString();
+        qs   = this.buildQueryString(overriddenParams);
 
-    return [base, qs].join('?');
+    return `${base}?${qs}`;
   },
 
   /**
@@ -139,7 +140,7 @@ var Oauth2 = Provider.extend({
    */
   open(options) {
     var name        = this.get('name'),
-        url         = this.buildUrl(),
+        url         = this.buildUrl(options),
         redirectUri = this.get('redirectUri'),
         responseParams = this.get('responseParams'),
         responseType = this.get('responseType'),

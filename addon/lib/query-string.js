@@ -1,27 +1,66 @@
 import { A } from '@ember/array';
 import { camelize } from '@ember/string';
-import EmberObject, { get } from '@ember/object';
+
+function buildQueryString(objGetter, requiredParams, optionalParams, overriddenParams = {}) {
+  const urlParams = A(requiredParams.slice()).uniq();
+  const optionalUrlParams = A(optionalParams ? optionalParams.slice() : []).uniq();
+
+  optionalUrlParams.forEach((param) => {
+    if (urlParams.indexOf(param) > -1) {
+      throw new Error(
+        `Required parameters cannot also be optional: "${param}"`
+      );
+    }
+  });
+
+  const keyValuePairs = A([]);
+
+  const overriddenParamGetter = (keyName) => {
+    return overriddenParams[keyName];
+  };
+
+  urlParams.forEach(function(paramName) {
+    const paramValue = getOptionalParamValue(overriddenParamGetter, paramName) ||
+      getParamValue(objGetter, paramName);
+
+    keyValuePairs.push([paramName, paramValue]);
+  });
+
+  optionalUrlParams.forEach(function(paramName) {
+    const paramValue = getOptionalParamValue(overriddenParamGetter, paramName) ||
+      getOptionalParamValue(objGetter, paramName);
+
+    if (isValue(paramValue)) {
+      keyValuePairs.push([paramName, paramValue]);
+    }
+  });
+
+  return keyValuePairs.map(function(pair) {
+    return pair.join('=');
+  }).join('&');
+}
 
 function isValue(value){
   return (value || value === false);
 }
 
-function getParamValue(obj, paramName, optional){
-  var camelizedName = camelize(paramName),
-      value         = get(obj, camelizedName);
+function getParamValue(objGetter, paramName, optional = false) {
+  const camelizedName = camelize(paramName),
+        value         = objGetter(camelizedName);
 
   if (!optional) {
-    if ( !isValue(value) && isValue(get(obj, paramName))) {
+    if ( !isValue(value) && isValue(objGetter(paramName))) {
       throw new Error(
-        'Use camelized versions of url params. (Did not find ' +
-        '"' + camelizedName + '" property but did find ' +
-        '"' + paramName + '".');
+        `Use camelized versions of url params. (Did not find \
+        "${camelizedName}" property but did find \
+        "${paramName}".`
+      );
     }
 
     if (!isValue(value)) {
       throw new Error(
-        'Missing url param: "'+paramName+'". (Looked for: property named "' +
-        camelizedName + '".'
+        `Missing url param: "${paramName}". (Looked for: property named \
+        "${camelizedName}".`
       );
     }
   }
@@ -29,45 +68,26 @@ function getParamValue(obj, paramName, optional){
   return isValue(value) ? encodeURIComponent(value) : undefined;
 }
 
-function getOptionalParamValue(obj, paramName){
-  return getParamValue(obj, paramName, true);
+function getOptionalParamValue(objGetter, paramName){
+  return getParamValue(objGetter, paramName, true);
 }
 
-export default EmberObject.extend({
-  init() {
-    this.obj               = this.provider;
-    this.urlParams         = A(this.requiredParams.slice()).uniq();
-    this.optionalUrlParams = A(this.optionalParams ? this.optionalParams.slice() : []).uniq();
+function parseQueryString(url, keys) {
+  const data = {};
 
-    this.optionalUrlParams.forEach(function(param){
-      if (this.urlParams.indexOf(param) > -1) {
-        throw new Error("Required parameters cannot also be optional: '" + param + "'");
-      }
-    }, this);
-  },
+  keys.forEach((key) => {
+    const regex = new RegExp(`${key}=([^&#]*)`);
+    const match = regex.exec(url);
 
-  toString() {
-    var urlParams         = this.urlParams,
-        optionalUrlParams = this.optionalUrlParams,
-        obj               = this.obj,
-        keyValuePairs     = A([]);
+    if (match) {
+      data[key] = match[1];
+    }
+  });
 
-    urlParams.forEach(function(paramName){
-      var paramValue = getParamValue(obj, paramName);
+  return data;
+}
 
-      keyValuePairs.push( [paramName, paramValue] );
-    });
-
-    optionalUrlParams.forEach(function(paramName){
-      var paramValue = getOptionalParamValue(obj, paramName);
-
-      if (isValue(paramValue)) {
-        keyValuePairs.push( [paramName, paramValue] );
-      }
-    });
-
-    return keyValuePairs.map(function(pair){
-      return pair.join('=');
-    }).join('&');
-  }
-});
+export {
+  buildQueryString,
+  parseQueryString
+};
