@@ -80,10 +80,10 @@ var ServicesMixin = Mixin.create({
       }
 
       service.one('didClose', function(){
+        let configuration = getConfiguration();
         let hasWarning = localStorage.getItem(WARNING_KEY);
         if (hasWarning) {
           localStorage.removeItem(WARNING_KEY);
-          let configuration = getConfiguration();
 
           assert(`[Torii] Using an OAuth redirect that loads your Ember App is deprecated and will be
               removed in a future release, as doing so is a potential security vulnerability.
@@ -99,7 +99,7 @@ var ServicesMixin = Mixin.create({
         // the message will be received and the window will close immediately.
         service.timeout = later(service, function() {
           reject(new Error("remote was closed, authorization was denied, or an authentication message otherwise not received before the window closed."));
-        }, 100);
+        }, configuration.popupCloseTimeout || 100);
       });
       window.addEventListener('storage', storageToriiEventHandler);
     }).finally(function(){
