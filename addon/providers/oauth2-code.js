@@ -1,9 +1,10 @@
 import { computed } from '@ember/object';
 import Provider from 'torii/providers/base';
 import { configurable } from 'torii/configuration';
-import QueryString from 'torii/lib/query-string';
+import { buildQueryString } from 'torii/lib/query-string';
 import requiredProperty from 'torii/lib/required-property';
 import randomUrlSafe from 'torii/lib/random-url-safe';
+import { get } from '@ember/object';
 
 function currentUrl(){
   var url = [window.location.protocol,
@@ -109,22 +110,22 @@ var Oauth2 = Provider.extend({
   }),
 
   buildQueryString() {
-    var requiredParams = this.get('requiredUrlParams'),
-        optionalParams = this.get('optionalUrlParams');
+    const providerGetter = (keyName) => {
+      return get(this, keyName);
+    };
 
-    var qs = QueryString.create({
-      provider: this,
-      requiredParams: requiredParams,
-      optionalParams: optionalParams
-    });
-    return qs.toString();
+    return buildQueryString(
+      providerGetter,
+      this.get('requiredUrlParams'),
+      this.get('optionalUrlParams')
+    );
   },
 
   buildUrl() {
     var base = this.get('baseUrl'),
         qs   = this.buildQueryString();
 
-    return [base, qs].join('?');
+    return `${base}?${qs}`;
   },
 
   /**
