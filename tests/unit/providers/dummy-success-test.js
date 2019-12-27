@@ -1,23 +1,11 @@
-import { run } from '@ember/runloop';
-var provider;
-
 import Provider from '../../helpers/dummy-success-provider';
-import QUnit from 'qunit';
+import { module, test } from 'qunit';
 
-let { module, test } = QUnit;
+module('Unit | Provider | DummySuccessProvider', function(/*hooks*/) {
+  test("Provider fulfills on open", function(assert){
+    const provider = Provider.create();
 
-module('Unit | Provider | DummySuccessProvider', {
-  beforeEach() {
-    provider = Provider.create();
-  },
-  afterEach() {
-    run(provider, 'destroy');
-  }
-});
-
-test("Provider fulfills on open", function(assert){
-  run(function(){
-    provider.open().then(function(){
+    return provider.open().then(function(){
       assert.ok(true, 'dummy-success resolves an open promise');
     }, function(){
       assert.ok(false, 'dummy-success failed to resolves an open promise');

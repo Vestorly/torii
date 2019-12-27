@@ -1,13 +1,8 @@
-[![Torii Build Status](https://circleci.com/gh/Vestorly/torii.png?circle-token=9bdd2f37dbcb0be85f82a6b1ac61b9333b68625b "Torii Build Status")](https://circleci.com/gh/Vestorly/torii) [![Ember Observer Score](http://emberobserver.com/badges/torii.svg)](http://emberobserver.com/addons/torii)
+# WARNING :warning:
+This fork is offered with absolutely **no support** and no guarantees.
 
-# Compatibility Matrix
-
-|  Torii    | Ember   | Ember-Data         |
-|-----------|---------|--------------------|
-| v0.3.X and before    | <= 1.13 | <= 1.0.0.beta19.2  |
-| v0.4.X and after     | >= 1.12 | >= 1.0.0.beta19.2  |
-
-**tl;dr;** Use the torii 0.3.X if your application is using Ember 1.11 or older.
+# Compatibility
+Ember v3.8.0+
 
 # What is Torii?
 
@@ -383,7 +378,7 @@ Then in `templates/application.hbs` you might have:
 
 Torii was originally configured to add an initializer that detects when your
 Ember app has been redirected-to by an OAuth provider, but this has been shown
-to be a potential vulnerability, and best practice is to use the static 
+to be a potential vulnerability, and best practice is to use the static
 `/torii/redirect.html` page that the Torii addon makes available as of version
 0.9.0.
 
@@ -438,7 +433,7 @@ export default Ember.Object.extend({
   // Create a new authorization.
   // When your code calls `this.get('torii').open('geocities', options)`,
   // the `options` will be passed to this provider's `open` method.
-  
+
   open: function(options) {
     return new Ember.RSVP.Promise(function(resolve, reject){
       // resolve with an authorization object
@@ -491,7 +486,7 @@ export default Ember.Route.extend({
         username: username,
         password: password
       };
-      
+
       this.get('torii').open(providerName, options).then(function(authorization){
         // authorization as returned by the provider
         route.somethingWithGeocitiesToken(authorization.sessionToken);

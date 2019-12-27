@@ -2,6 +2,7 @@ import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
+
 import config from '../config/environment';
 
 export default Controller.extend({

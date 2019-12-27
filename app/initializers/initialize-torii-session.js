@@ -9,6 +9,7 @@ export default {
     if (arguments[1]) { // Ember < 2.1
       application = arguments[1];
     }
+
     const configuration = getConfiguration();
     if (!configuration.sessionServiceName) {
       return;

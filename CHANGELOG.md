@@ -1,5 +1,3 @@
-# Master
+# 0.11.0
 
-# 0.6.1
-
-  * [#240](https://github.com/Vestorly/torii/pull/240) Set `attemptedTransition` on session for redirect-after-login
+Project overhaul to adopt modern convetions and remove deprecated usage.

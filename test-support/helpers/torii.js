@@ -5,10 +5,10 @@ const {
   torii: { sessionServiceName }
 } = config;
 
-export function stubValidSession(application, sessionData) {
-  let session = application.__container__.lookup(`service:${sessionServiceName}`);
+export function stubValidSession(owner, sessionData) {
+  const session = owner.lookup(`service:${sessionServiceName}`);
+  const sm = session.get('stateMachine');
 
-  let sm = session.get('stateMachine');
   run(() => {
     sm.send('startOpen');
     sm.send('finishOpen', sessionData);

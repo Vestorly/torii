@@ -1,7 +1,7 @@
 import { Promise as EmberPromise } from 'rsvp';
 import EmberObject from '@ember/object';
-var ApplicationAdapter = EmberObject.extend({
 
+const ApplicationAdapter = EmberObject.extend({
   open() {
     return new EmberPromise(function(){
       throw new Error(
@@ -22,7 +22,6 @@ var ApplicationAdapter = EmberObject.extend({
         'The Torii adapter must implement `close` for a session to be closed');
     });
   }
-
 });
 
 export default ApplicationAdapter;

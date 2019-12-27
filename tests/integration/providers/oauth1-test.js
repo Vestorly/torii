@@ -1,35 +1,19 @@
-import { run } from '@ember/runloop';
-import { resolve } from 'rsvp';
-import OAuth1Provider from 'torii/providers/oauth1';
+import { setupTest } from 'ember-qunit';
 import { configure } from 'torii/configuration';
-import startApp from '../../helpers/start-app';
-import lookup from '../../helpers/lookup';
-import QUnit from 'qunit';
+import { module, test } from 'qunit';
 
-const { module, test } = QUnit;
+import OAuth1Provider from 'torii/providers/oauth1';
+import MockPopupService from '../../helpers/mock-popup-service';
 
-var torii, app;
+const requestTokenUri = 'http://localhost:3000/oauth/callback';
+const providerName = 'oauth1';
 
-var opened, openedUrl, mockPopup = {
-  open(url) {
-    openedUrl = url;
-    opened = true;
-    return resolve({});
-  }
-};
+module('Integration | Provider | Oauth1', function(hooks) {
+  setupTest(hooks);
 
-var requestTokenUri = 'http://localhost:3000/oauth/callback';
-var providerName = 'oauth1';
+  hooks.beforeEach(function() {
+    this.owner.register('torii-provider:'+providerName, OAuth1Provider);
 
-module('Integration | Provider | Oauth1', {
-  beforeEach() {
-    app = startApp({loadInitializers: true});
-    app.register('torii-service:mock-popup', mockPopup, {instantiate: false});
-    app.inject('torii-provider', 'popup', 'torii-service:mock-popup');
-
-    app.register('torii-provider:'+providerName, OAuth1Provider);
-
-    torii = lookup(app, "service:torii");
     configure({
       providers: {
         [providerName]: {
@@ -37,18 +21,26 @@ module('Integration | Provider | Oauth1', {
         }
       }
     });
-  },
-  afterEach() {
-    opened = false;
-    run(app, 'destroy');
-  }
-});
+  });
 
-test("Opens a popup to the requestTokenUri", function(assert){
-  run(function(){
-    torii.open(providerName).finally(function(){
-      assert.equal(openedUrl, requestTokenUri, 'opens with requestTokenUri');
-      assert.ok(opened, "Popup service is opened");
+  test("Opens a popup to the requestTokenUri", function(assert){
+    class MyPopupService extends MockPopupService {
+      async open(url) {
+        const result = super.open(...arguments);
+
+        assert.equal(url, requestTokenUri, 'opens with requestTokenUri');
+
+        return result;
+      }
+    }
+
+    const mockPopup = MyPopupService.create();
+    const torii = this.owner.lookup('service:torii');
+
+    this.owner.register('torii-service:popup', mockPopup, {instantiate: false});
+
+    return torii.open(providerName).finally(function() {
+      assert.ok(mockPopup.opened, "Popup service is opened");
     });
   });
 });

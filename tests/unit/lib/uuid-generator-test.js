@@ -1,17 +1,15 @@
 import UUIDGenerator from 'torii/lib/uuid-generator';
-import QUnit from 'qunit';
+import { module, test } from 'qunit';
 
-let { module, test } = QUnit;
+module('Unit | Lib | UUIDGenerator', function(/*hooks*/) {
+  test('exists', function(assert){
+    assert.ok(UUIDGenerator);
+  });
 
-module('Unit | Lib | UUIDGenerator');
+  test('.generate returns a new uuid each time', function(assert){
+    const first = UUIDGenerator.generate();
+    const second = UUIDGenerator.generate();
 
-test('exists', function(assert){
-  assert.ok(UUIDGenerator);
-});
-
-test('.generate returns a new uuid each time', function(assert){
-  var first = UUIDGenerator.generate();
-  var second = UUIDGenerator.generate();
-
-  assert.notEqual(first, second);
+    assert.notEqual(first, second);
+  });
 });

@@ -16,16 +16,20 @@ export default {
       return;
     }
 
-    let router = getRouterInstance(applicationInstance);
+    let _router = getRouterInstance(applicationInstance);
+    const router = applicationInstance.lookup('service:router');
+
     var setupRoutes = function(){
-      let routerLib = getRouterLib(router);
+      let routerLib = getRouterLib(_router);
       var authenticatedRoutes = routerLib.authenticatedRoutes;
       var hasAuthenticatedRoutes = !Ember.isEmpty(authenticatedRoutes);
       if (hasAuthenticatedRoutes) {
         bootstrapRouting(applicationInstance, authenticatedRoutes);
       }
-      router.off('willTransition', setupRoutes);
+
+      router.off('routeWillChange', setupRoutes);
     };
-    router.on('willTransition', setupRoutes);
+
+    router.on('routeWillChange', setupRoutes);
   }
 };

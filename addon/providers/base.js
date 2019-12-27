@@ -34,6 +34,7 @@ var Base = EmberObject.extend({
       configuration.remoteServiceName ||
       DEFAULT_REMOTE_SERVICE_NAME
     );
+
     return owner.lookup('torii-service:'+remoteServiceName);
   }),
 

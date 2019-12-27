@@ -1,10 +1,8 @@
 import Torii from 'torii/services/torii';
-import QUnit from 'qunit';
+import { module, test } from 'qunit';
 
-let { module, test } = QUnit;
-
-module('Unit | Torii');
-
-test('exists', function(assert){
-  assert.ok(Torii);
+module('Unit | Torii', function(/*hooks*/) {
+  test('exists', function(assert){
+    assert.ok(Torii);
+  });
 });

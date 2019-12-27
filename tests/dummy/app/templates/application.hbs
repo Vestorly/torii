@@ -2,9 +2,9 @@
 
 <h2>Torii: Example Usage</h2>
 
-<div class='providers'>
+<div class="providers">
   {{#each providers as |provider|}}
-    <div class='provider'>
+    <div class="provider">
       <button {{action "authorize" provider}}>
         {{provider}}
       </button>
@@ -12,8 +12,9 @@
   {{/each}}
 </div>
 
-<div class='auth-data'>
-  Auth data: {{#if authData}}
+<div class="auth-data">
+  Auth data:
+  {{#if authData}}
     {<pre>{{inspect-object authData}}</pre>}
   {{/if}}
 </div>
