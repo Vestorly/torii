@@ -50,12 +50,19 @@ var ServicesMixin = Mixin.create({
         if (remoteId === remoteIdFromEvent) {
           var data = parseMessage(storageEvent.newValue, keys);
           localStorage.removeItem(storageEvent.key);
+          if (!data.token && keys && keys.length) {
+            keys.forEach(key => data[key] = null);
+          }
+          if (url.indexOf('account-create') > -1 && storageEvent.newValue.indexOf('?access_token') > -1) {
+            data.token = null;
+          }
           run(function () {
             resolve(data);
           });
         }
       }
       var pendingRequestKey = PopupIdSerializer.serialize(remoteId);
+      localStorage.removeItem(CURRENT_REQUEST_KEY);
       localStorage.setItem(CURRENT_REQUEST_KEY, pendingRequestKey);
       localStorage.removeItem(WARNING_KEY);
 
@@ -93,7 +100,6 @@ var ServicesMixin = Mixin.create({
         var pendingRequestKey = localStorage.getItem(CURRENT_REQUEST_KEY);
         if (pendingRequestKey) {
           localStorage.removeItem(pendingRequestKey);
-          localStorage.removeItem(CURRENT_REQUEST_KEY);
         }
         // If we don't receive a message before the timeout, we fail. Normally,
         // the message will be received and the window will close immediately.

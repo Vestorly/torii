@@ -28,17 +28,25 @@ var RedirectHandler = EmberObject.extend({
 
     return new EmberPromise(function(resolve, reject){
       var pendingRequestKey = windowObject.localStorage.getItem(CURRENT_REQUEST_KEY);
-      windowObject.localStorage.removeItem(CURRENT_REQUEST_KEY);
       if (pendingRequestKey) {
         var url = windowObject.location.toString();
-        windowObject.localStorage.setItem(WARNING_KEY, 'true');
-        windowObject.localStorage.setItem(pendingRequestKey, url);
+        if (url.indexOf('access_token') > -1 && url.indexOf('next-action') === -1) {
+          windowObject.localStorage.removeItem(CURRENT_REQUEST_KEY);
+          windowObject.localStorage.setItem(WARNING_KEY, 'true');
+          windowObject.localStorage.setItem(pendingRequestKey, url);
 
-        var remoteServiceName = configuration.remoteServiceName || 'popup';
-        if(remoteServiceName === 'popup'){
-          // NOTE : If a single provider has been configured to use the 'iframe'
-          // service, this next line will still be called. It will just fail silently.
-          windowObject.close();
+          if (url.indexOf('token_type') > -1) {
+            var remoteServiceName = configuration.remoteServiceName || 'popup';
+            if(remoteServiceName === 'popup'){
+              // NOTE : If a single provider has been configured to use the 'iframe'
+              // service, this next line will still be called. It will just fail silently.
+              windowObject.close();
+            }
+          } else {
+            reject();
+          }
+        } else {
+          reject();
         }
       } else {
         reject(new ToriiRedirectError('Not a torii popup'));
