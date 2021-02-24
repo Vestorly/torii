@@ -1,11 +1,12 @@
 import StateMachine from 'torii/lib/state-machine';
+import { set } from '@ember/object';
 
 var transitionTo = StateMachine.transitionTo;
 
 function copyProperties(data, target) {
   for (var key in data) {
     if (data.hasOwnProperty(key)) {
-      target[key] = data[key];
+      set(target, key, data[key]);
     }
   }
 }
